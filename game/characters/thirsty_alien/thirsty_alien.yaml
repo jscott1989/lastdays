@@ -1,5 +1,5 @@
-name: Alien
-color: #FFFFFF
+name: Thirsty Alien
+color: #000000
 sprite: characters/alien/alien.png
 width: 256
 height: 386

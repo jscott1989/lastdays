@@ -1,7 +1,63 @@
 background: rooms/lobby/lobby.jpg
-mask: rooms/lobby/lobby.jpg
+mask: rooms/lobby/lobby-mask.png
 scaling:
   minY: 220
   maxY: 500
   maxScale: 0.6
   minScale: 0.1
+default_state:
+  npcs:
+    - id: welcome
+      character: welcome_alien
+      location:
+        x: 300
+        y: 400
+        direction: down
+    - id: receptionist
+      character: receptionist
+      location:
+        x: 699
+        y: 270
+        direction: down
+    - id: thirsty
+      character: thirsty_alien
+      location:
+        x: 24
+        y: 354
+        direction: right
+  hotspots:
+    - id: sign1
+      type: sign
+      location:
+        x: 35
+        y: 170
+        width: 100
+        height: 30
+    - id: sign2
+      type: sign
+      location:
+        x: 580
+        y: 150
+        width: 70
+        height: 20
+    - id: sign3
+      type: sign
+      location:
+        x: 832
+        y: 137
+        width: 77
+        height: 25
+    - id: vending_machine
+      type: vending_machine
+      location:
+        x: 1227
+        y: 271
+        width: 147
+        height: 215
+    - id: pen
+      type: pen
+      location:
+        x: 649
+        y: 239
+        width: 19
+        height: 16

@@ -1,6 +1,18 @@
-from lastdays.models import Player
+from lastdays.models import Player, Room
 from lastdays.game import config
 from django.utils import timezone
+from lastdays import engine_settings
+import os
+import yaml
+
+
+def color_generator():
+    while True:
+        for color in engine_settings.PLAYER_COLORS:
+            yield color
+
+
+get_next_color = color_generator()
 
 
 def extract_player_from_path(path):
@@ -11,15 +23,30 @@ def extract_player_from_path(path):
         defaults={
             "data": {
                 "character": config["default_character"],
-                "location": config["starting_location"]
+                "location": config["starting_location"],
             },
             "last_action": timezone.now()
         }
     )
 
     if created:
-        # TODO: Initialise the player
-        # player.save()
-        pass
+        player.data["color"] = get_next_color.__next__()
+        player.save()
 
     return player
+
+def reset_game_state():
+    # For now we assume nobody is playing
+    # load default items/npcs/etc. into rooms
+    for room in Room.objects.all():
+        room.delete()
+
+    # This is only during test... in live we should kick everyone to the default place
+    # for player in Player.objects.all():
+    #     player.delete()
+
+    for roomId in os.listdir("game/rooms"):
+        with open("game/rooms/%s/%s.yaml" % (roomId, roomId)) as o:
+            room_config = yaml.load(o.read())
+            room = Room(id=roomId, state=room_config.get("default_state", {}))
+            room.save()

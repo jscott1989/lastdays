@@ -5,6 +5,7 @@ import Renderer from "../rendering/Renderer.js";
 import LocalPlayer from "./LocalPlayer.js";
 import Room from "./Room.js";
 
+
 /**
  * Global object representing the overall game state.
  *
@@ -19,6 +20,9 @@ export default class Game {
         this.uiController = new UIController(this);
 
         this.debugMode = debugMode;
+        if (debugMode) {
+            window.game = this;
+        }
 
         // Game state
         // First is configuration and content types
@@ -84,8 +88,8 @@ export default class Game {
     }
 
     _click(subject, content) {
-        // For now, just assume we're moving to the given location
-        this.player.move(content.x, content.y);
+        const [x, y] = this.room.getNearestWalkablePoint(content.x, content.y, this.player.sprite.x, this.player.sprite.y);
+        this.player.move(x, y);
     }
 
     loadPlayer(data) {
@@ -149,5 +153,20 @@ export default class Game {
 
     getElapsed() {
         return this.renderer.getElapsed();
+    }
+
+    getHoveredObject() {
+        return this.hoveredObject;
+    }
+
+    setHoveredObject(hoveredObject) {
+        this.hoveredObject = hoveredObject;
+        this.renderer.updateCursor();
+    }
+
+    unsetHoveredObject(hoveredObject) {
+        if (this.hoveredObject === hoveredObject) {
+            this.setHoveredObject(null);
+        }
     }
 }

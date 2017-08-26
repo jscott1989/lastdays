@@ -6,6 +6,11 @@ import datetime
 ALL = "__ALL__"
 
 
+class Room(models.Model):
+    id = models.CharField(max_length=255, primary_key=True)
+    state = JSONField()
+
+
 class World(models.Model):
     state = JSONField()
 
@@ -57,13 +62,14 @@ class Player(models.Model):
     def refresh(self, channel=None):
         player_data = self.player_data()
 
+        room_state = self.get_room().state.copy()
+        room_state["players"] = [p.player_data() for p in Player.get_in_room(
+            player_data["location"]["room"]) if not p == self]
+
         data = {
             "world": World.get().state,
             "player": player_data,
-            "room": {
-                "players": [p.player_data() for p in Player.get_in_room(
-                    player_data["location"]["room"]) if not p == self]
-            }
+            "room": room_state
         }
 
         self.send("refresh", data, channel)
@@ -86,6 +92,9 @@ class Player(models.Model):
     def get_player_group(self):
         from channels import Group
         return Group(self.id)
+
+    def get_room(self):
+        return Room.objects.get(pk=self.data["location"]["room"])
 
     def get_room_group(self):
         from channels import Group

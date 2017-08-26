@@ -28,6 +28,7 @@ export default class Renderer {
     _preload() {
         this.phaser.stage.disableVisibilityChange = true;
         this.background = this.phaser.add.group();
+        this.hotspots = this.phaser.add.group();
         this.sprites = this.phaser.add.group();
 
         this.phaser.input.onDown.add((pointer) => {
@@ -63,6 +64,36 @@ export default class Renderer {
         }
     }
 
+    updateCursor() {
+        if (this.hoveredObjectText != null) {
+            this.hoveredObjectText.destroy();
+            this.hoveredObjectText = null;
+        }
+        if (this.game.getHoveredObject() == null) {
+            this.phaser.canvas.style.cursor = "default";
+        } else {
+            // TODO: support different interactions
+            this.phaser.canvas.style.cursor = "pointer";
+            const hoverable = this.game.getHoveredObject().hoverable;
+
+            const bounds = this.getSpriteBounds(hoverable.getSprite());
+            console.log(bounds);
+
+            this.hoveredObjectText = this.addText(
+                bounds.x + hoverable.getSprite().width / 2,
+                bounds.y + hoverable.getSprite().height + 10, hoverable.getName(), {
+                    font: "18px Press Start 2P",
+                    fill: "#112266",
+                    align: "center",
+                    wordWrap: true,
+                    wordWrapWidth: 300,
+                    stroke: "#000000",
+                    strokeThickness: 2
+                });
+            this.hoveredObjectText.x -= this.hoveredObjectText.width / 2;
+        }
+    }
+
     addText(x, y, text, options) {
         return this.phaser.add.text(x, y, text, options);
     }
@@ -95,7 +126,39 @@ export default class Renderer {
             sprite.animations.add(animationKey, animation.frames, animation.fps, animation.loop);
         })
         sprite.animations.play('idle-side');
+
         return sprite;
+    }
+
+    addHotspotSprite(x, y, width, height) {
+        console.log("Adding hotspot", x, y, width, height);
+        var bmd = this.phaser.add.bitmapData(width, height);
+
+        if (this.game.debugMode) {
+            bmd.ctx.beginPath();
+            bmd.ctx.rect(0,0,width,height);
+            bmd.ctx.fillStyle = 'rgba(255,0,0,0.5)';
+            bmd.ctx.fill();
+        }
+
+        var hotspotSprite = this.phaser.add.sprite(x, y, bmd);
+        this.hotspots.add(hotspotSprite);
+
+        return hotspotSprite;
+    }
+
+    enableInput(hoverable) {
+        hoverable.sprite.inputEnabled = true;
+
+        const hoveredObject = {"hoverable": hoverable};
+
+        hoverable.sprite.events.onInputOver.add(() => {
+            this.game.setHoveredObject(hoveredObject);
+        });
+
+        hoverable.sprite.events.onInputOut.add(() => {
+            this.game.unsetHoveredObject(hoveredObject);
+        });
     }
 
     makeBitmapData(width, height) {
@@ -112,5 +175,12 @@ export default class Renderer {
 
     getElapsed() {
         return this.phaser.time.elapsed;
+    }
+
+    getSpriteBounds(sprite) {
+        return {
+            x: sprite.x - (sprite.width * sprite.anchor.x),
+            y: sprite.y - (sprite.height * sprite.anchor.y)
+        }
     }
 }

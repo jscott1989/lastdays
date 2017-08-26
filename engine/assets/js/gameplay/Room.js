@@ -1,5 +1,40 @@
+import Hotspot from "./Hotspot.js";
 import Player from "./Player.js";
+import NPC from "./NPC.js";
 import EasyStar from "easystarjs";
+
+function calcStraightLine (startCoordinates, endCoordinates) {
+    var coordinatesArray = new Array();
+    // Translate coordinates
+    var x1 = startCoordinates[0];
+    var y1 = startCoordinates[1];
+    var x2 = endCoordinates[0];
+    var y2 = endCoordinates[1];
+    // Define differences and error check
+    var dx = Math.abs(x2 - x1);
+    var dy = Math.abs(y2 - y1);
+    var sx = (x1 < x2) ? 1 : -1;
+    var sy = (y1 < y2) ? 1 : -1;
+    var err = dx - dy;
+    // Set first coordinates
+    coordinatesArray.push([x1, y1]);
+    // Main loop
+    while (!((x1 == x2) && (y1 == y2))) {
+      var e2 = err << 1;
+      if (e2 > -dy) {
+        err -= dy;
+        x1 += sx;
+      }
+      if (e2 < dx) {
+        err += dx;
+        y1 += sy;
+      }
+      // Set coordinates
+      coordinatesArray.push([x1, y1]);
+    }
+    // Return the result
+    return coordinatesArray;
+  }
 
 export default class Room {
 
@@ -10,6 +45,8 @@ export default class Room {
         // Sprites
         this.background = null
         this.players = new Map();
+        this.npcs = new Map();
+        this.hotspots = new Map();
         // End sprites
 
         // We bind the callbacks for subscriptions
@@ -24,6 +61,9 @@ export default class Room {
         this.game.debugMessage("Unloading room " + this.name);
 
         this.background.destroy();
+        this.players.forEach(player => player.destroy());
+        this.npcs.forEach(npc => npc.destroy());
+        this.npcs.forEach(hotspot => hotspot.destroy());
 
         this.game.getConnection().messagesObservable.unsubscribe("add_player", this._add_player);
         this.game.getConnection().messagesObservable.unsubscribe("remove_player", this._remove_player);
@@ -49,7 +89,7 @@ export default class Room {
         bmd.update();
         const bmdata = bmd.data;
 
-        var map = []
+        this.map = []
         var i = 0;
         for (var y = 0; y < this.height; y++) {
             var r = [];
@@ -63,14 +103,28 @@ export default class Room {
                 i += 4;
             }
 
-            map.push(r);
+            this.map.push(r);
         }
 
-        this.easystar.setGrid(map);
+        this.easystar.setGrid(this.map);
         this.easystar.setAcceptableTiles([1]);
 
-        data.players.forEach(player => {
+        const players = data.players || [];
+
+        players.forEach(player => {
             this.players.set(player.id, new Player(this.game, player));
+        });
+
+        const npcs = data.npcs || [];
+
+        npcs.forEach(npc => {
+            this.npcs.set(npc.id, new NPC(this.game, npc));
+        });
+
+        const hotspots = data.hotspots || [];
+
+        hotspots.forEach(hotspot => {
+            this.hotspots.set(hotspot.id, new Hotspot(this.game, hotspot));
         });
 
         this.game.getConnection().messagesObservable.subscribe("add_player", this._add_player);
@@ -144,5 +198,26 @@ export default class Room {
 
         sprite.scale.x = (sprite.scale.x > 0) ? scaleValue : -scaleValue;
         sprite.scale.y = scaleValue;
+    }
+
+    getNearestWalkablePoint(x, y, currentX, currentY) {
+        // TODO: This does not consider walkable from current location
+        // this may be needed in a future iteration
+        if (this.map[y][x] > 0) {
+            return [x, y];
+        }
+        const currentPosition = [currentX, currentY];
+        const targetPosition = [x, y];
+        const possibleCoordinates = calcStraightLine(targetPosition, currentPosition);
+
+        for (var c in possibleCoordinates) {
+            const coordinate = possibleCoordinates[c];
+            if (this.map[coordinate[1]][coordinate[0]] > 0) {
+                // Can use this one
+                return [coordinate[0], coordinate[1]]
+            }
+        }
+
+        return null;
     }
 }
