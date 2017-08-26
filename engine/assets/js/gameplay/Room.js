@@ -16,6 +16,7 @@ export default class Room {
         this._add_player = this._add_player.bind(this);
         this._remove_player = this._remove_player.bind(this);
         this._move = this._move.bind(this);
+        this._talk = this._talk.bind(this);
         // End binding
     }
 
@@ -75,6 +76,7 @@ export default class Room {
         this.game.getConnection().messagesObservable.subscribe("add_player", this._add_player);
         this.game.getConnection().messagesObservable.subscribe("remove_player", this._remove_player);
         this.game.getConnection().messagesObservable.subscribe("move", this._move);
+        this.game.getConnection().messagesObservable.subscribe("talk", this._talk);
     }
 
     _add_player(subject, content) {
@@ -82,6 +84,7 @@ export default class Room {
             // We don't need to add ourselves
             return;
         }
+        
         this.players.set(content.player.id, new Player(this.game, content.player));
     }
 
@@ -101,6 +104,15 @@ export default class Room {
         }
 
         this.players.get(content.player).move(content.x, content.y);
+    }
+
+    _talk(subject, content) {
+        if (content.player == this.game.getPlayer().getId()) {
+            // We initiated the talk - don't repeat it
+            return;
+        }
+
+        this.players.get(content.player).talk(content.text);
     }
 
 

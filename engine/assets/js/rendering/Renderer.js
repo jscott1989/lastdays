@@ -38,15 +38,12 @@ export default class Renderer {
         });
 
         const rooms = this.game.getConfiguration().get("rooms");
-        console.log("S1");
         Object.keys(rooms).forEach(roomId => {
             this.game.debugMessage(`Loading room ${roomId}`);
             const room = rooms[roomId];
             this.phaser.load.image(roomId + '-background', '/static/' + room.background);
             this.phaser.load.image(roomId + '-mask', '/static/' + room.mask);
-            console.log("S3");
         });
-        console.log("S2");
 
         const characters = this.game.getConfiguration().get("characters");
         Object.keys(characters).forEach(characterId => {
@@ -60,6 +57,14 @@ export default class Renderer {
         if (this.game != null) {
             this.game.update();
         }
+
+        if (this.sprites != null) {
+            this.sprites.sort("y");
+        }
+    }
+
+    addText(x, y, text, options) {
+        return this.phaser.add.text(x, y, text, options);
     }
 
 
@@ -103,5 +108,9 @@ export default class Renderer {
 
     setBounds(x1, y1, x2, y2) {
         this.phaser.world.setBounds(x1, y1, x2, y2);
+    }
+
+    getElapsed() {
+        return this.phaser.time.elapsed;
     }
 }

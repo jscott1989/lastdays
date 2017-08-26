@@ -40,16 +40,16 @@ export default class Game {
         this.fetchConfiguration()
             .then(this.renderer.initialise.bind(this.renderer))
             .then(() => {
-            this.connection = new Connection(this);
+                this.connection = new Connection(this);
 
-            this.connection.connectObservable.subscribe(() => {this._connected()});
-            this.connection.disconnectObservable.subscribe(() => {this._disconnected()});
+                this.connection.connectObservable.subscribe(() => {this._connected()});
+                this.connection.disconnectObservable.subscribe(() => {this._disconnected()});
 
-            this.uiController.showModal("connecting", "Connecting");
+                this.uiController.showModal("connecting", "Connecting");
 
-            this.connection.messagesObservable.subscribe("refresh", (_, data) => {this._refresh(data)});
+                this.connection.messagesObservable.subscribe("refresh", (_, data) => {this._refresh(data)});
 
-            this.connection.connect(this.localIdentity);
+                this.connection.connect(this.localIdentity);
         });
     }
 
@@ -103,6 +103,7 @@ export default class Game {
         }
         this.room = new Room(this, this.player.get("location").room);
         this.room.load(data);
+        this.room.scale(this.player.sprite);
     }
 
     debugMessage() {
@@ -133,6 +134,10 @@ export default class Game {
         return this.room;
     }
 
+    getRenderer() {
+        return this.renderer;
+    }
+
     update() {
         if (this.room != null) {
             this.room.update();
@@ -140,5 +145,9 @@ export default class Game {
         if (this.player != null) {
             this.player.update();
         }
+    }
+
+    getElapsed() {
+        return this.renderer.getElapsed();
     }
 }

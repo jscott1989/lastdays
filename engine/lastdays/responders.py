@@ -14,3 +14,10 @@ def move(player, subject, content):
         "x": content["x"],
         "y": content["y"]
     })
+
+
+def talk(player, subject, content):
+    player.send_to_room("talk", {
+        "player": player.id,
+        "text": content["text"],
+    })

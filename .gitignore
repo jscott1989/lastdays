@@ -1,2 +1,4 @@
 ve
 node_modules
+/engine/static/style.css
+/engine/static/bundle.js

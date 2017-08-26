@@ -10,4 +10,9 @@ export default class LocalPlayer extends Player {
         super.move(x, y);
         this.game.getConnection().send("move", {x: x, y: y});
     }
+
+    talk(text) {
+        super.talk(text);
+        this.game.getConnection().send("talk", {"text": text})
+    }
 }

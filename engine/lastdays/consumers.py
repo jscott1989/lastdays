@@ -6,6 +6,7 @@ from lastdays import responders
 RESPONDERS = {
     "ping": responders.ping,
     "move": responders.move,
+    "talk": responders.talk
 }
 
 

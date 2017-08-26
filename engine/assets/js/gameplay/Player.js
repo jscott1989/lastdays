@@ -1,4 +1,4 @@
-const SMOOTHING_AMOUNT = 200;
+const SMOOTHING_AMOUNT = 500;
 
 export default class Player {
     constructor(game, data) {
@@ -9,6 +9,10 @@ export default class Player {
         this.sprite = game.renderer.addCharacterSprite(this.data.character,
             this.data.location.x,
             this.data.location.y);
+
+        if (this.game.getRoom() != null) {
+            this.game.getRoom().scale(this.sprite);
+        }
     }
 
     get(key) {
@@ -40,6 +44,20 @@ export default class Player {
     update() {
         if (this.movingPath != null) {
             this._updatePath();
+        }
+
+        if (this.talkText != null) {
+            this.talkTextTimeout -= this.game.getElapsed();
+            if (this.talkTextTimeout <= 0) {
+                this.talkText.destroy();
+                this.talkText = null;
+                if (this.talkTextCallback != null) {
+                    this.talkTextCallback();
+                }
+            } else {
+                this.talkText.x = this.sprite.x;
+                this.talkText.y = this.sprite.y - (this.sprite.height * this.sprite.scale.y) - this.talkText.height * 0.5;
+            }
         }
     }
 
@@ -111,5 +129,29 @@ export default class Player {
             this.movingPath = null;
             this.sprite.animations.play('idle-' + this.direction)
         }
+    }
+
+    talk(text) {
+        return new Promise((resolve, fail) => {
+            if (this.talkText != null) {
+                this.talkText.destroy();
+            }
+
+            this.talkText = this.game.getRenderer().addText(
+                0,
+                0, text, {
+                    font: "18px Press Start 2P",
+                    fill: "#FFFFFF",
+                    align: "center",
+                    wordWrap: true,
+                    wordWrapWidth: 300,
+                    stroke: "#000000",
+                    strokeThickness: 2
+                });
+
+            this.talkText.anchor.setTo(0.5, 1);
+            this.talkTextTimeout = 3000;
+            this.talkTextCallback = resolve;
+        });
     }
 }
