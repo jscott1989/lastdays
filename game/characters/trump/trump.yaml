@@ -1,8 +1,8 @@
 name: Donald Trump
 color: #F49542
 sprite: characters/alien/alien.png
-width: 32
-height: 64
+width: 256
+height: 512
 animations:
   idle-side:
     frames:

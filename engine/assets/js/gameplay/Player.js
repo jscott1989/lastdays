@@ -51,10 +51,14 @@ export default class Player {
             var next_direction = this.direction;
 
             if (next.x < this.sprite.x) {
-                this.sprite.scale.x = -1;
+                if (this.sprite.scale.x > 0) {
+                    this.sprite.scale.x = 0 - this.sprite.scale.x;
+                }
                 next_direction = "side";
             } else if (next.x > this.sprite.x) {
-                this.sprite.scale.x = 1;
+                if (this.sprite.scale.x < 0) {
+                    this.sprite.scale.x = 0 - this.sprite.scale.x;
+                }
                 next_direction = "side";
             } else if (next.y < this.sprite.y) {
                 next_direction = "up";
@@ -100,6 +104,7 @@ export default class Player {
 
             this.sprite.x = next.x;
             this.sprite.y = next.y;
+            this.game.getRoom().scale(this.sprite);
             this.sprite.animations.play('walk-' + this.direction)
         } else {
             // Just finished

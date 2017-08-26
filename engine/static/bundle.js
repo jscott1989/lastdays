@@ -122470,23 +122470,25 @@ class Room {
         this.game.debugMessage("Loading room " + this.name);
 
         const bgImg = this.game.renderer.phaser.cache.getImage(this.name + "-background");
+        this.width = bgImg.width;
+        this.height = bgImg.height;
         this.background = this.game.renderer.addTileSprite(this.name + "-background");
-        this.game.renderer.setBounds(0, 0, bgImg.width, bgImg.height);
+        this.game.renderer.setBounds(0, 0, this.width, this.height);
 
         // Calculate Easystar from mask
         this.easystar = new __WEBPACK_IMPORTED_MODULE_1_easystarjs___default.a.js();
         const maskImg = this.game.renderer.phaser.cache.getImage(this.name + "-mask");
 
-        const bmd = this.game.renderer.makeBitmapData(maskImg.width, maskImg.height);
+        const bmd = this.game.renderer.makeBitmapData(this.width, this.height);
         bmd.draw(maskImg, 0, 0);
         bmd.update();
         const bmdata = bmd.data;
 
         var map = [];
         var i = 0;
-        for (var y = 0; y < bgImg.height; y++) {
+        for (var y = 0; y < this.height; y++) {
             var r = [];
-            for (var x = 0; x < bgImg.width; x++) {
+            for (var x = 0; x < this.width; x++) {
                 if (bmdata[i + 3] > 0) {
                     // Visible
                     r.push(1);
@@ -122554,6 +122556,18 @@ class Room {
 
         this.players.forEach(player => player.update());
     }
+
+    /**
+     * Set the appropriate scaling for a given sprite.
+     */
+    scale(sprite) {
+        const scaling = game.getConfiguration().get("rooms")[this.name].scaling;
+        const yPos = Math.max(Math.min(sprite.y, scaling.maxY), scaling.minY);
+        const scaleValue = (yPos - scaling.minY) / (scaling.maxY - scaling.minY) * (scaling.maxScale - scaling.minScale) + scaling.minScale;
+
+        sprite.scale.x = sprite.scale.x > 0 ? scaleValue : -scaleValue;
+        sprite.scale.y = scaleValue;
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Room;
 
@@ -122614,10 +122628,14 @@ class Player {
             var next_direction = this.direction;
 
             if (next.x < this.sprite.x) {
-                this.sprite.scale.x = -1;
+                if (this.sprite.scale.x > 0) {
+                    this.sprite.scale.x = 0 - this.sprite.scale.x;
+                }
                 next_direction = "side";
             } else if (next.x > this.sprite.x) {
-                this.sprite.scale.x = 1;
+                if (this.sprite.scale.x < 0) {
+                    this.sprite.scale.x = 0 - this.sprite.scale.x;
+                }
                 next_direction = "side";
             } else if (next.y < this.sprite.y) {
                 next_direction = "up";
@@ -122663,6 +122681,7 @@ class Player {
 
             this.sprite.x = next.x;
             this.sprite.y = next.y;
+            this.game.getRoom().scale(this.sprite);
             this.sprite.animations.play('walk-' + this.direction);
         } else {
             // Just finished

@@ -34,23 +34,25 @@ export default class Room {
 
 
         const bgImg = this.game.renderer.phaser.cache.getImage(this.name + "-background");
+        this.width = bgImg.width;
+        this.height = bgImg.height;
         this.background = this.game.renderer.addTileSprite(this.name + "-background");
-        this.game.renderer.setBounds(0, 0, bgImg.width, bgImg.height);
+        this.game.renderer.setBounds(0, 0, this.width, this.height);
 
         // Calculate Easystar from mask
         this.easystar = new EasyStar.js();
         const maskImg = this.game.renderer.phaser.cache.getImage(this.name + "-mask");
 
-        const bmd = this.game.renderer.makeBitmapData(maskImg.width, maskImg.height);
+        const bmd = this.game.renderer.makeBitmapData(this.width, this.height);
         bmd.draw(maskImg, 0, 0);
         bmd.update();
         const bmdata = bmd.data;
 
         var map = []
         var i = 0;
-        for (var y = 0; y < bgImg.height; y++) {
+        for (var y = 0; y < this.height; y++) {
             var r = [];
-            for (var x = 0; x < bgImg.width; x++) {
+            for (var x = 0; x < this.width; x++) {
                 if (bmdata[i + 3] > 0) {
                     // Visible
                     r.push(1);
@@ -118,5 +120,17 @@ export default class Room {
         this.easystar.calculate();
 
         this.players.forEach(player => player.update());
+    }
+
+    /**
+     * Set the appropriate scaling for a given sprite.
+     */
+    scale(sprite) {
+        const scaling = game.getConfiguration().get("rooms")[this.name].scaling;
+        const yPos = Math.max(Math.min(sprite.y, scaling.maxY), scaling.minY);
+        const scaleValue = ((yPos - scaling.minY) / (scaling.maxY - scaling.minY)) * (scaling.maxScale - scaling.minScale) + scaling.minScale;
+
+        sprite.scale.x = (sprite.scale.x > 0) ? scaleValue : -scaleValue;
+        sprite.scale.y = scaleValue;
     }
 }

@@ -1,2 +1,7 @@
 background: rooms/lobby/lobby.jpg
 mask: rooms/lobby/lobby.jpg
+scaling:
+  minY: 220
+  maxY: 500
+  maxScale: 0.6
+  minScale: 0.1
