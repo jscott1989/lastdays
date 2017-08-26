@@ -5,3 +5,5 @@ starting_location:
   x: 390
   y: 590
   direction: up
+starting_inventory:
+  euro: 6

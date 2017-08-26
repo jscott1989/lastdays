@@ -1,1 +1,4 @@
 name: Pen
+lookAt:
+  - type: talk
+    text: It's a blue pen. Attached to the desk by a little chain.

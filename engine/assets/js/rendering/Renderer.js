@@ -77,7 +77,6 @@ export default class Renderer {
             const hoverable = this.game.getHoveredObject().hoverable;
 
             const bounds = this.getSpriteBounds(hoverable.getSprite());
-            console.log(bounds);
 
             this.hoveredObjectText = this.addText(
                 bounds.x + hoverable.getSprite().width / 2,
@@ -131,9 +130,7 @@ export default class Renderer {
     }
 
     addHotspotSprite(x, y, width, height) {
-        console.log("Adding hotspot", x, y, width, height);
-        var bmd = this.phaser.add.bitmapData(width, height);
-
+        const bmd = this.phaser.add.bitmapData(width, height);
         if (this.game.debugMode) {
             bmd.ctx.beginPath();
             bmd.ctx.rect(0,0,width,height);

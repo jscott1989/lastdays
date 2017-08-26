@@ -24,6 +24,7 @@ def extract_player_from_path(path):
             "data": {
                 "character": config["default_character"],
                 "location": config["starting_location"],
+                "inventory": config["starting_inventory"],
             },
             "last_action": timezone.now()
         }
@@ -42,8 +43,8 @@ def reset_game_state():
         room.delete()
 
     # This is only during test... in live we should kick everyone to the default place
-    # for player in Player.objects.all():
-    #     player.delete()
+    for player in Player.objects.all():
+        player.delete()
 
     for roomId in os.listdir("game/rooms"):
         with open("game/rooms/%s/%s.yaml" % (roomId, roomId)) as o:

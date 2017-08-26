@@ -166,12 +166,16 @@ export default class Character {
                 });
 
             this.talkText.anchor.setTo(0, 1);
-            this.talkTextTimeout = text.length * 250;
+            this.talkTextTimeout = text.length * 150;
             this.talkTextCallback = resolve;
         });
     }
 
     getName() {
         return this.game.getConfiguration().get("characters")[this.data.character].name;
+    }
+
+    getLookAt() {
+        return this.game.getConfiguration().get("characters")[this.data.character].lookAt;
     }
 }

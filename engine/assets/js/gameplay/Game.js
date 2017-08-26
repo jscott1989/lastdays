@@ -75,7 +75,6 @@ export default class Game {
     }
 
     _disconnected() {
-        console.log("DISC");
         this.uiController.showModal("connecting", "Disconnected. Attempting to restore connection");
     }
 
@@ -88,6 +87,15 @@ export default class Game {
     }
 
     _click(subject, content) {
+        if (content.button == "RIGHT" && this.selectedItem != null) {
+            this.selectItem(null);
+            return;
+        } else if (content.button == "RIGHT" && this.hoveredObject != null) {
+            // Look at something
+            this.executeActions(this.hoveredObject.hoverable.getLookAt());
+            return;
+        }
+        
         const [x, y] = this.room.getNearestWalkablePoint(content.x, content.y, this.player.sprite.x, this.player.sprite.y);
         this.player.move(x, y);
     }
@@ -99,6 +107,7 @@ export default class Game {
 
         this.player = new LocalPlayer(this, data)
         this.renderer.follow(this.player.getSprite());
+        this.uiController.refreshInventory();
     }
 
     loadRoom(data) {
@@ -167,6 +176,28 @@ export default class Game {
     unsetHoveredObject(hoveredObject) {
         if (this.hoveredObject === hoveredObject) {
             this.setHoveredObject(null);
+        }
+    }
+
+    selectItem(itemType) {
+        this.selectedItem = itemType;
+        this.uiController.refreshInventory();
+    }
+
+    getSelectedItem() {
+        return this.selectedItem;
+    }
+
+    executeActions(actions, index) {
+        index = index || 0;
+
+        if (index >= actions.length) {
+            return;
+        }
+
+        const action = actions[index];
+        if (action.type == "talk") {
+            this.player.talk(action.text).then(() => this.executeActions(actions, index + 1));
         }
     }
 }

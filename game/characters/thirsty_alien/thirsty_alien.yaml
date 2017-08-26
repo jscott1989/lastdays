@@ -49,3 +49,6 @@ animations:
       - 20
     fps: 6
     loop: true
+lookAt:
+  - type: talk
+    text: A well-to-do alien who keeps strangely swallowing.

@@ -1,0 +1,7 @@
+name: \"Diet\" Soda
+image: inventoryitems/dietsoda/dietsoda.png
+lookAt:
+  - type: talk
+    text: It's still just an ordinary soda, full of sugar.
+  - type: talk
+    text: But now it has "Diet" written on the front.

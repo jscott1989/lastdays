@@ -1,1 +1,4 @@
 name: Vending Machine
+lookAt:
+  - type: talk
+    text: The vending machine says "Soda €3"

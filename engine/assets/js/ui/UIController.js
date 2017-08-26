@@ -8,6 +8,10 @@ export default class UIController {
 
         this.keydown = this.keydown.bind(this)
         $(document).keydown(this.keydown);
+
+        $(document).on("mousedown", "#inventory li", this._selectItem.bind(this))
+        $(document).on("mousemove", this._mousemove.bind(this))
+        $(document).on("mousedown", this._mousedown.bind(this))
     }
 
     showModal(id, message) {
@@ -64,5 +68,69 @@ export default class UIController {
 
             $(document).bind("keydown", checkKeyPress);
         });
+    }
+
+    refreshInventory() {
+        const $ul = $("#inventory ul");
+        $ul.html("");
+
+        if (this.selectedItemImage != null) {
+            this.selectedItemImage.remove();
+            this.selectedItemImage = null;
+        }
+
+        const inventory = this.game.player.get("inventory");
+
+        Object.keys(inventory).forEach(inventoryItemType => {
+            const inventoryItemNumber = inventory[inventoryItemType];
+            const item = this.game.getConfiguration().get("inventoryitems")[inventoryItemType]
+            const li = $(`<li data-item-type="${inventoryItemType}">
+                <img src="/static/${item.image}">
+                <span class="number number-${inventoryItemNumber}">x${inventoryItemNumber}</span>
+                <span class="hoverText">${item.name}</span>
+            </li>`);
+
+            if (this.game.getSelectedItem() == inventoryItemType) {
+                li.addClass("selected");
+            }
+            $ul.append(li);
+        });
+
+        if (this.game.getSelectedItem() != null) {
+            const item = this.game.getConfiguration().get("inventoryitems")[this.game.getSelectedItem()];
+            this.selectedItemImage = $(`<img class="selected-item" src="static/${item.image}">`);
+            $("body").append(this.selectedItemImage);
+        }
+    }
+
+    _selectItem(e) {
+        const itemType = $(e.target).parent().data("item-type");
+        const item = this.game.getConfiguration().get("inventoryitems")[itemType];
+        if (e.button == 2) {
+            // Look at
+            this.game.executeActions(item.lookAt);
+            return;
+        }
+
+        if (this.game.getSelectedItem() == itemType) {
+            this.game.selectItem(null);
+        } else {
+            this.game.selectItem(itemType);
+        }
+    }
+
+    _mousemove(e) {
+        if (this.selectedItemImage != null) {
+            this.selectedItemImage.css({
+                left: e.clientX + 10,
+                top: e.clientY + 10
+            });
+        }
+    }
+
+    _mousedown(e) {
+        if (e.button == 2 && this.game.getSelectedItem() != null) {
+            this.game.selectItem(null);
+        }
     }
 }

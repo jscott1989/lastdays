@@ -12,7 +12,7 @@ export default class LocalPlayer extends Player {
     }
 
     talk(text) {
-        super.talk(text);
         this.game.getConnection().send("talk", {"text": text})
+        return super.talk(text);
     }
 }

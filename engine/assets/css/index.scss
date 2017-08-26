@@ -19,6 +19,7 @@ body {
     width: 1000px;
     height: 600px;
     background: #000;
+    border: 2px solid black;
 
     position: absolute;
     top:0;
@@ -27,6 +28,10 @@ body {
     right: 0;
 
     margin: auto;
+}
+
+#game {
+    float: left;
 }
 
 
@@ -87,3 +92,84 @@ body {
 }
 
 // End Chat Text
+
+// Menu
+
+#menu {
+    float: left;
+    background: #FFF;
+    width: 198px;
+    height: 600px;
+    border-left: 2px solid black;
+
+    .separator {
+        background: red;
+        border-bottom: 2px solid black;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        text-align: center;
+    }
+}
+
+#inventory {
+    height: 250px;
+    border-bottom: 2px solid black;
+
+    ul, li {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        float: left;
+        position: relative;
+        cursor: pointer;
+
+        .number {
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+        }
+
+        .number-1 {
+            display: none;
+        }
+
+        .hoverText {
+            display: none;
+            position: absolute;
+            bottom: -20px;
+            left: 0px;
+            width: 100%;
+            text-align: center;
+            color: #112266;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: #000000;
+        }
+
+
+        &:hover {
+            .hoverText {
+                display: block;
+            }
+        }
+
+        &.selected {
+            border: 2px solid black;
+        }
+
+    }
+}
+
+#info {
+    padding: 5px;
+}
+
+// End Menu
+
+// Selected Item
+.selected-item {
+    position: absolute;
+}
+// End Selected Item

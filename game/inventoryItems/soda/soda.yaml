@@ -1,0 +1,5 @@
+name: Soda
+image: inventoryitems/soda/soda.png
+lookAt:
+  - type: talk
+    text: It's just an ordinary soda, full of sugar.

@@ -33,4 +33,8 @@ export default class Character {
     getName() {
         return this.game.getConfiguration().get("hotspots")[this.data.type].name;
     }
+
+    getLookAt() {
+        return this.game.getConfiguration().get("hotspots")[this.data.type].lookAt;
+    }
 }
