@@ -1,0 +1,4 @@
+#!/bin/sh
+virtualenv -p python3 engine/ve
+source engine/ve/bin/activate
+pip install -r engine/requirements.txt

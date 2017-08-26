@@ -1,0 +1,6 @@
+name: The Last Days of Earth
+default_character: alien
+starting_location:
+  room: lobby
+  x: 100
+  y: 100

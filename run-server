@@ -1,0 +1,3 @@
+#!/bin/sh
+source engine/ve/bin/activate
+python engine/manage.py runserver

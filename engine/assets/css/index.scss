@@ -1,0 +1,22 @@
+// Modals
+
+.modal {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(200, 200, 200, 0.9);
+
+    > div {
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        margin-top: -50px;
+        width: 100%;
+        height: 100px;
+        text-align: center;
+    }
+}
+
+// End Modals

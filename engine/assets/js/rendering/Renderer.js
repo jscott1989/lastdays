@@ -1,0 +1,107 @@
+import PIXI from 'expose-loader?PIXI!phaser-ce/build/custom/pixi.js';
+import p2 from 'expose-loader?p2!phaser-ce/build/custom/p2.js';
+import Phaser from 'expose-loader?Phaser!phaser-ce/build/custom/phaser-split.js';
+import Observable from "../networking/Observable.js";
+
+export default class Renderer {
+    constructor(game) {
+        this.game = game;
+        this.clickEvents = new Observable("click events", game);
+    }
+
+    initialise() {
+        const promise = new Promise((resolve, fail) => {
+            this.phaser = new Phaser.Game(
+                800, 600,
+                Phaser.CANVAS,
+                "game", 
+                { preload: () => {
+                    this._preload();
+                    resolve();
+                },
+                update: () => this._update()}
+            );
+        });
+        return promise;
+    }
+
+    _preload() {
+        this.phaser.stage.disableVisibilityChange = true;
+        this.background = this.phaser.add.group();
+        this.sprites = this.phaser.add.group();
+
+        this.phaser.input.onDown.add((pointer) => {
+            const x = this.phaser.input.x + this.phaser.camera.x;
+            const y = this.phaser.input.y + this.phaser.camera.y;
+            const button = (pointer.button == Phaser.Mouse.RIGHT_BUTTON) ? "RIGHT" : "LEFT";
+            this.clickEvents.trigger({"x": x, "y": y, "button": button});
+        });
+
+        const rooms = this.game.getConfiguration().get("rooms");
+        console.log("S1");
+        Object.keys(rooms).forEach(roomId => {
+            this.game.debugMessage(`Loading room ${roomId}`);
+            const room = rooms[roomId];
+            this.phaser.load.image(roomId + '-background', '/static/' + room.background);
+            this.phaser.load.image(roomId + '-mask', '/static/' + room.mask);
+            console.log("S3");
+        });
+        console.log("S2");
+
+        const characters = this.game.getConfiguration().get("characters");
+        Object.keys(characters).forEach(characterId => {
+            this.game.debugMessage(`Loading character ${characterId}`);
+            const character = characters[characterId];
+            this.phaser.load.spritesheet(characterId + '-sprite', '/static/' + character.sprite, character.width, character.height);
+        });
+    }
+    
+    _update() {
+        if (this.game != null) {
+            this.game.update();
+        }
+    }
+
+
+    addTileSprite(name, x, y) {
+        x = x || 0
+        y = y || 0
+
+        const img = this.phaser.cache.getImage(name);
+
+        const sprite = this.phaser.add.tileSprite(
+            x,
+            y,
+            img.width,
+            img.height,
+            name);
+
+        this.background.add(sprite);
+        return sprite;
+    }
+
+    addCharacterSprite(character, x, y) {
+        const sprite = this.phaser.add.sprite(x, y, character + '-sprite', null, this.sprites);
+        sprite.anchor.setTo(.5,1);
+
+        const animations = game.getConfiguration().get("characters")[character].animations;
+        Object.keys(animations).forEach((animationKey) => {
+            const animation = animations[animationKey];
+            sprite.animations.add(animationKey, animation.frames, animation.fps, animation.loop);
+        })
+        sprite.animations.play('idle-side');
+        return sprite;
+    }
+
+    makeBitmapData(width, height) {
+        return this.phaser.make.bitmapData(width, height);
+    }
+
+    follow(sprite) {
+        this.phaser.camera.follow(sprite);
+    }
+
+    setBounds(x1, y1, x2, y2) {
+        this.phaser.world.setBounds(x1, y1, x2, y2);
+    }
+}
