@@ -38,6 +38,13 @@ def talk(player, subject, content):
     })
 
 
+def playSound(player, subject, content):
+    player.send_to_room("playSound", {
+        "player": player.id,
+        "sound": content["sound"],
+    })
+
+
 def removeFromInventory(player, subject, content):
     player.data["inventory"][content["item"]] -= 1
     if player.data["inventory"][content["item"]] <= 0:

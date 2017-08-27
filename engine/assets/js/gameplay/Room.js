@@ -55,6 +55,7 @@ export default class Room {
         this._setDirection = this._setDirection.bind(this);
         this._move = this._move.bind(this);
         this._talk = this._talk.bind(this);
+        this._playSound = this._playSound.bind(this);
         // End binding
     }
 
@@ -71,6 +72,7 @@ export default class Room {
         this.game.getConnection().messagesObservable.unsubscribe("move", this._move);
         this.game.getConnection().messagesObservable.unsubscribe("talk", this._talk);
         this.game.getConnection().messagesObservable.unsubscribe("setDirection", this._setDirection);
+        this.game.getConnection().messagesObservable.unsubscribe("playSound", this._playSound);
     }
 
     load(data) {
@@ -135,6 +137,7 @@ export default class Room {
         this.game.getConnection().messagesObservable.subscribe("move", this._move);
         this.game.getConnection().messagesObservable.subscribe("talk", this._talk);
         this.game.getConnection().messagesObservable.subscribe("setDirection", this._setDirection);
+        this.game.getConnection().messagesObservable.subscribe("playSound", this._playSound);
     }
 
     _addPlayer(subject, content) {
@@ -180,6 +183,15 @@ export default class Room {
         }
 
         this.players.get(content.player).talk(content.text);
+    }
+
+    _playSound(subject, content) {
+        if (content.player == this.game.getPlayer().getId()) {
+            // We initiated the sound - don't repeat it
+            return;
+        }
+
+        this.players.get(content.player).playSound(content.sound);
     }
 
 

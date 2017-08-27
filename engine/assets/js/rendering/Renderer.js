@@ -52,6 +52,11 @@ export default class Renderer {
             const character = characters[characterId];
             this.phaser.load.spritesheet(characterId + '-sprite', '/static/' + character.sprite, character.width, character.height);
         });
+
+        const sounds = this.game.getConfiguration().get("sounds");
+        Object.keys(sounds).forEach(soundId => {
+            this.phaser.load.audio(soundId, '/static/sounds/' + sounds[soundId]);
+        });
     }
     
     _update() {
@@ -179,5 +184,16 @@ export default class Renderer {
             x: sprite.x - (sprite.width * sprite.anchor.x),
             y: sprite.y - (sprite.height * sprite.anchor.y)
         }
+    }
+
+    playSound(soundId) {
+        return new Promise((resolve, fail) => {
+            const sound = this.phaser.sound.add(soundId);
+            sound.onStop.addOnce(() => {
+                console.log("FINISHED PLAYING");
+                resolve();
+            });
+            sound.play();
+        })
     }
 }

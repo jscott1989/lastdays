@@ -8,7 +8,8 @@ export default class ActionExecutor {
             "removeFromInventory": this._removeFromInventory.bind(this),
             "addToInventory": this._addToInventory.bind(this),
             "setVariable": this._setVariable.bind(this),
-            "beginDialogue": this._beginDialogue.bind(this)
+            "beginDialogue": this._beginDialogue.bind(this),
+            "playSound": this._playSound.bind(this)
         }
     }
 
@@ -89,5 +90,14 @@ export default class ActionExecutor {
 
     _beginDialogue(action, player, context) {
         return player.beginDialogue(context, action.dialogue);
+    }
+
+    _playSound(action, player, context) {
+        if (action.wait) {
+            return this.game.getPlayer().playSound(action.sound)
+        } else {
+            this.game.getPlayer().playSound(action.sound)
+            return Promise.resolve();
+        }
     }
 }

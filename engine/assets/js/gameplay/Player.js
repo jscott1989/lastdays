@@ -19,4 +19,8 @@ export default class Player extends Character {
     beginDialogue(participant2, dialogueId) {
         this.dialogue = new Dialogue(this.game, this, participant2, dialogueId);
     }
+
+    playSound(sound) {
+        return this.game.getRenderer().playSound(sound);
+    }
 }

@@ -110,7 +110,7 @@ export default class Game {
 
             this.player.move(x, y, direction).then(() => {
                 const interactKey = selectedItem || "interact";
-                this.actionExecutor.executeActions(hoveredObject.hoverable.getInteract(interactKey), this.player, this.hoveredObject.hoverable);
+                this.actionExecutor.executeActions(hoveredObject.hoverable.getInteract(interactKey), this.player, hoveredObject.hoverable);
             });
 
             this.selectItem(null);

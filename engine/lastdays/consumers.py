@@ -11,8 +11,10 @@ RESPONDERS = {
     "setPlayerVariable": responders.setPlayerVariable,
     "removeFromInventory": responders.removeFromInventory,
     "addToInventory": responders.addToInventory,
-    "setDirection": responders.setDirection
+    "setDirection": responders.setDirection,
+    "playSound": responders.playSound
 }
+
 
 @transaction.atomic()
 def ws_connect(message):

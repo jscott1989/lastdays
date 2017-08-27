@@ -16,4 +16,7 @@ def configuration(request):
         for r in os.listdir("game/%s" % t):
             with open("game/%s/%s/%s.yaml" % (t, r, r)) as o:
                 configuration[t][r] = yaml.load(o.read())
+
+    # This only supports MP3 - the format will need to change to support more
+    configuration["sounds"] = {os.path.splitext(r)[0]:r for r in os.listdir("game/sounds")}
     return JsonResponse(configuration)

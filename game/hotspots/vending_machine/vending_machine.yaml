@@ -11,6 +11,9 @@ interact:
             text: I don't want any more soda
       - condition: "@state.insertedEuros >= 3"
         actions:
+          - type: playSound
+            sound: vendingmachinesoda
+            wait: true
           - type: addToInventory
             item: soda
           - type: setVariable
@@ -41,6 +44,23 @@ euro:
             text: I don't need to insert any more coins
       - condition: default
         actions:
+          - type: condition
+            options:
+              - condition: "@state.insertedEuros == 2"
+                actions:
+                - type: playSound
+                  sound: insertcoin3
+                  wait: true
+              - condition: "@state.insertedEuros == 1"
+                actions:
+                  - type: playSound
+                    sound: insertcoin2
+                    wait: true
+              - condition: default
+                actions:
+                  - type: playSound
+                    sound: insertcoin1
+                    wait: true
           - type: removeFromInventory
             item: euro
           - type: setVariable

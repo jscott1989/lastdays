@@ -42,4 +42,9 @@ export default class LocalPlayer extends Player {
         super.beginDialogue(participant2, dialogueId);
         this.game.getUiController().showDialogue(this.dialogue);
     }
+
+    playSound(sound) {
+        this.game.getConnection().send("playSound", {"sound": sound})
+        return super.playSound(sound);
+    }
 }
