@@ -107,6 +107,16 @@ export default class UIController {
     _selectItem(e) {
         const itemType = $(e.target).parent().data("item-type");
         const item = this.game.getConfiguration().get("inventoryitems")[itemType];
+
+        if (this.dialogue) {
+            if (e.button == 2) {
+                return;
+            }
+
+            this.dialogue.dialogue.pick(itemType);
+            return;
+        }
+
         if (e.button == 2) {
             // Look at
             this.game.getActionExecutor().executeActions(item.lookAt, this.game.getPlayer(), item);
@@ -140,7 +150,7 @@ export default class UIController {
 
         this.dialogue = $(`<div id="dialogue">
             <div class="options">
-                <ul>
+                <ul class="main">
                 </ul>
                 <div class="right">
                     <ul>
@@ -155,6 +165,14 @@ export default class UIController {
 
         this.dialogue.dialogue = dialogue;
 
+        dialogue.getOptions().forEach((option) => {
+            const $ul = this.dialogue.find("ul.main");
+            $ul.append($(`<li data-option="${option.option}">
+                <img src="/static/${option.image}">
+                <span class="hoverText">${option.hover ? option.hover : option.option}</span>
+            </li>`));
+        });
+
         this.dialogue.find("li").click((e) => {
             const option = $(e.target).parent().data("option");
             this.dialogue.dialogue.pick(option);
@@ -162,17 +180,30 @@ export default class UIController {
 
         $("#game-container").append(this.dialogue);
         this.game.setHoveredObject(null);
-
-        //<li data-option="la">
-        //     <img src="/static/inventoryItems/euro/euro.png">
-        //     <span class="hoverText">Euro</span>
-        // </li>
     }
 
     hideDialogue() {
         if (this.dialogue != null) {
             this.dialogue.remove();
             this.dialogue = null;
+        }
+    }
+
+    blockDialogueInterface() {
+        this.unblockDialogueInterface();
+        this.dialogueInterfaceBlocker = $(`
+            <div class="blocker">
+                <div class="dialogue-blocker"></div>
+                <div class="menu-blocker"></div>
+            </div>
+        `);
+        $("#game-container").append(this.dialogueInterfaceBlocker);
+    }
+
+    unblockDialogueInterface() {
+        if (this.dialogueInterfaceBlocker != null) {
+            this.dialogueInterfaceBlocker.remove();
+            this.dialogueInterfaceBlocker = null;
         }
     }
 }

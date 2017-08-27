@@ -16,8 +16,33 @@ export default class Player extends Character {
         this.data.inventory[item] += 1;
     }
 
-    beginDialogue(participant2, dialogueId) {
-        this.dialogue = new Dialogue(this.game, this, participant2, dialogueId);
+    getDialogue() {
+        return this.dialogue;
+    }
+
+    beginDialogue(npc, dialogueId) {
+        this.dialogue = new Dialogue(this.game, this, npc, dialogueId);
+    }
+
+    endDialogue() {
+        this.dialogue = null;
+    }
+
+    pickDialogue(dialogueId, option, npc) {
+        npc.dialogueInProgress = new Promise((resolve, fail) => {
+            const dialogue = this.game.getPlayer().getDialogue();
+            if (dialogue && dialogue.npc == npc) {
+                this.game.getUiController().blockDialogueInterface();
+            }
+            this.game.getActionExecutor().executeActions(this.game.getConfiguration().get("dialogues")[dialogueId][option].actions, [this, npc]).then(() => {
+                if (dialogue && dialogue.npc == npc) {
+                    this.game.getUiController().showDialogue(dialogue);
+                    this.game.getUiController().unblockDialogueInterface();
+                }
+                npc.dialogueInProgress = null;
+                resolve();
+            });
+        });
     }
 
     playSound(sound) {

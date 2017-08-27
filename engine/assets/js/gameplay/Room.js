@@ -56,6 +56,7 @@ export default class Room {
         this._move = this._move.bind(this);
         this._talk = this._talk.bind(this);
         this._playSound = this._playSound.bind(this);
+        this._pickDialogue = this._pickDialogue.bind(this);
         // End binding
     }
 
@@ -73,6 +74,7 @@ export default class Room {
         this.game.getConnection().messagesObservable.unsubscribe("talk", this._talk);
         this.game.getConnection().messagesObservable.unsubscribe("setDirection", this._setDirection);
         this.game.getConnection().messagesObservable.unsubscribe("playSound", this._playSound);
+        this.game.getConnection().messagesObservable.unsubscribe("pickDialogue", this._pickDialogue);
     }
 
     load(data) {
@@ -138,6 +140,7 @@ export default class Room {
         this.game.getConnection().messagesObservable.subscribe("talk", this._talk);
         this.game.getConnection().messagesObservable.subscribe("setDirection", this._setDirection);
         this.game.getConnection().messagesObservable.subscribe("playSound", this._playSound);
+        this.game.getConnection().messagesObservable.subscribe("pickDialogue", this._pickDialogue);
     }
 
     _addPlayer(subject, content) {
@@ -194,6 +197,15 @@ export default class Room {
         this.players.get(content.player).playSound(content.sound);
     }
 
+    _pickDialogue(subject, content) {
+        if (content.player == this.game.getPlayer().getId()) {
+            // We initiated the dialogue - don't repeat it
+            return;
+        }
+
+        this.players.get(content.player).pickDialogue(content.dialogueId, content.option, this.npcs.get(content.npc));
+    }
+
 
     findPath(x1, y1, x2, y2) {
         return new Promise((resolve, fail) => {
@@ -211,6 +223,7 @@ export default class Room {
         this.easystar.calculate();
 
         this.players.forEach(player => player.update());
+        this.npcs.forEach(npc => npc.update());
     }
 
     /**

@@ -9,10 +9,12 @@ RESPONDERS = {
     "move": responders.move,
     "talk": responders.talk,
     "setPlayerVariable": responders.setPlayerVariable,
+    "setWorldVariable": responders.setWorldVariable,
     "removeFromInventory": responders.removeFromInventory,
     "addToInventory": responders.addToInventory,
     "setDirection": responders.setDirection,
-    "playSound": responders.playSound
+    "playSound": responders.playSound,
+    "pickDialogue": responders.pickDialogue
 }
 
 
@@ -25,23 +27,18 @@ def ws_connect(message):
 
 @transaction.atomic()
 def ws_disconnect(message):
-    print("DISCONNECTING")
     player = extract_player_from_path(message.content["path"])
     player.disconnect()
 
 
 @transaction.atomic()
 def ws_message(message):
-    try:
-        with transaction.atomic():
-            player = extract_player_from_path(message.content["path"])
-            command = json.loads(message.content["text"])
-            subject = command.get("subject")
-            content = command.get("content")
-            if subject in RESPONDERS:
-                RESPONDERS[subject](player, subject, content)
-            else:
-                print("Unknown subject: %s" % subject)
-    except Exception as e:
-        print("OH NO")
-        print(e)
+    with transaction.atomic():
+        player = extract_player_from_path(message.content["path"])
+        command = json.loads(message.content["text"])
+        subject = command.get("subject")
+        content = command.get("content")
+        if subject in RESPONDERS:
+            RESPONDERS[subject](player, subject, content)
+        else:
+            print("Unknown subject: %s" % subject)

@@ -5,6 +5,7 @@ import Renderer from "../rendering/Renderer.js";
 import LocalPlayer from "./LocalPlayer.js";
 import Room from "./Room.js";
 import ActionExecutor from "./ActionExecutor.js";
+import WorldState from "./WorldState.js";
 
 
 /**
@@ -29,7 +30,7 @@ export default class Game {
         // Game state
         // First is configuration and content types
         this.configuration = new Datastore();
-        this.worldState = new Datastore();
+        this.worldState = new WorldState(this);
 
         this.debugMessage("Starting in debug mode. Disable this before going live.");
     }
@@ -51,6 +52,7 @@ export default class Game {
                 this.uiController.showModal("connecting", "Connecting");
 
                 this.connection.messagesObservable.subscribe("refresh", (_, data) => {this._refresh(data)});
+                this.connection.messagesObservable.subscribe("setWorldVariable", (_, data) => {this._setWorldVariable(data)});
 
                 this.connection.connect(this.localIdentity);
         });
@@ -83,6 +85,10 @@ export default class Game {
         this.worldState.setData(refreshContent.world);
         this.loadPlayer(refreshContent.player);
         this.loadRoom(refreshContent.room);
+    }
+
+    _setWorldVariable(content) {
+        this.worldState.setLocal(content.key, content.value);
     }
 
     _click(subject, content) {

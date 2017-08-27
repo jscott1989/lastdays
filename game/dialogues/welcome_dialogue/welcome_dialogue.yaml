@@ -1,20 +1,23 @@
 hello:
+  image: dialogues/welcome_dialogue/hello.png
+  onceOnly: true
   actions:
     -
-      action: talk
       participant: 1
+      type: talk
       text: Hi
     -
-      action: talk
       participant: 2
-      text: Hello and welcome to Other World Escape
+      type: talk
+      text: Hello and welcome to Other World Escapes
     -
-      action: talk
       participant: 2
+      type: talk
       text: The number one escape experience this side of Epsilon Eridani!
-otherworldescapes:
+euro:
+  item: true
   actions:
     -
-      action: talk
-      participant: 1
-      text: Other
+      participant: 2
+      type: talk
+      text: Oh no no. I don't deal with money.

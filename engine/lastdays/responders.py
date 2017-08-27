@@ -45,6 +45,15 @@ def playSound(player, subject, content):
     })
 
 
+def pickDialogue(player, subject, content):
+    player.send_to_room("pickDialogue", {
+        "player": player.id,
+        "dialogueId": content["dialogueId"],
+        "option": content["option"],
+        "npc": content["npc"]
+    })
+
+
 def removeFromInventory(player, subject, content):
     player.data["inventory"][content["item"]] -= 1
     if player.data["inventory"][content["item"]] <= 0:
@@ -71,3 +80,25 @@ def setPlayerVariable(player, subject, content):
 
     data[parts[-1]] = content["value"]
     player.save()
+
+
+def setWorldVariable(player, subject, content):
+    from lastdays.utils import send_to_all
+    send_to_all("setWorldVariable", {
+        "key": content["key"],
+        "value": content["value"]
+    })
+    from lastdays.models import World
+    parts = content["key"].split(".")
+
+    world = World.get()
+
+    data = world.state
+
+    for part in parts[:-1]:
+        if part not in data:
+            data[part] = {}
+        data = data[part]
+
+    data[parts[-1]] = content["value"]
+    world.save()

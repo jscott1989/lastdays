@@ -175,6 +175,11 @@ export default class Character {
     }
 
     talk(text) {
+        // By default we do not synchronise talk
+        return this.localTalk(text);
+    }
+
+    localTalk(text) {
         return new Promise((resolve, fail) => {
             if (this.talkText != null) {
                 this.talkText.destroy();

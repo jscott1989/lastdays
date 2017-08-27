@@ -42,6 +42,7 @@ export default class Connection {
     }
 
     send(subject, content) {
+        this.game.debugMessage("Sending", subject, content);
         this.webSocketBridge.send({subject: subject, content: content});
     }
 

@@ -4,6 +4,7 @@ export default class ActionExecutor {
 
         this.ACTIONS = {
             "talk": this._talk.bind(this),
+            "localTalk": this._localTalk.bind(this),
             "condition": this._condition.bind(this),
             "removeFromInventory": this._removeFromInventory.bind(this),
             "addToInventory": this._addToInventory.bind(this),
@@ -14,55 +15,37 @@ export default class ActionExecutor {
     }
 
     executeActions(actions, player, context) {
-        return new Promise((resolve, fail) => {
-            var result = Promise.resolve();
-            actions.forEach(action => {
-                result = result.then(() => this.ACTIONS[action.type](action, player, context));
+        var result = Promise.resolve();
+        actions.forEach(action => {
+            // We assume that action.participant is used then multiple players have been passed
+            const actionPlayer = (action.participant) ? player[action.participant - 1] : player;
+
+            result = result.then(() => {
+                return this.ACTIONS[action.type](action, actionPlayer, context)
             });
-            resolve();
         });
+        return result;
     }
 
     _talk(action, player) {
+        console.log("Making player talk", player, action.text);
         return player.talk(action.text);
+    }
+
+    _localTalk(action, player) {
+        return player.localTalk(action.text);
     }
 
     _condition(action, player, context) {
         return new Promise((resolve, fail) => {
             for (const i in action.options) {
                 const option = action.options[i];
-                if (this._evaluateCondition(option.condition, player)) {
+                if (this._evaluateCondition(option.condition, player, this.game)) {
                     this.executeActions(option.actions, player, context).then(resolve);
                     return;
                 }
             }
         })
-    }
-
-    _formatReadString(string) {
-        if (!(typeof string == "string")) {
-            return string;
-        }
-
-        const localRegex = /@([\w\.]+)/g;
-        const localRegexReplacement = "player.get(\"$1\")";
-
-        const worldRegex = /\^([\w\.]+)/g;
-        const worldRegexReplacement = "this.game.getWorldState().get(\"$1\")";
-
-        return string.replace(localRegex, localRegexReplacement).replace(worldRegex, worldRegexReplacement);
-    }
-
-    _evaluateCondition(condition, player) {
-        if (condition === "default") {
-            return true;
-        }
-
-        condition = this._formatReadString(condition);
-
-        this.game.debugMessage("Evaluating condition " + condition);
-
-        return eval(condition);
     }
 
     _removeFromInventory(action, player) {
@@ -76,7 +59,7 @@ export default class ActionExecutor {
     }
 
     _setVariable(action, player) {
-        const value = eval(this._formatReadString(action.value));
+        const value = eval(ActionExecutor.formatReadString(action.value));
         
         const localRegex = /@([\w\.]+)/g;
         const localRegexReplacement = "player.set(\"$1\", " + value + ")";
@@ -100,4 +83,28 @@ export default class ActionExecutor {
             return Promise.resolve();
         }
     }
+}
+
+ActionExecutor.formatReadString = (string) => {
+    if (!(typeof string == "string")) {
+        return string;
+    }
+
+    const localRegex = /@([\w\.]+)/g;
+    const localRegexReplacement = "player.get(\"$1\")";
+
+    const worldRegex = /\^([\w\.]+)/g;
+    const worldRegexReplacement = "game.getWorldState().get(\"$1\")";
+
+    return string.replace(localRegex, localRegexReplacement).replace(worldRegex, worldRegexReplacement);
+}
+
+ActionExecutor.evaluateCondition = (condition, player, game) => {
+    if (condition === "default") {
+        return true;
+    }
+
+    condition = ActionExecutor.formatReadString(condition);
+
+    return eval(condition);
 }

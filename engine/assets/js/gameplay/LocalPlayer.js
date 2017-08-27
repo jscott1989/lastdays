@@ -38,13 +38,41 @@ export default class LocalPlayer extends Player {
         super.setDirection(direction);
     }
 
-    beginDialogue(participant2, dialogueId) {
-        super.beginDialogue(participant2, dialogueId);
+    beginDialogue(npc, dialogueId) {
+        super.beginDialogue(npc, dialogueId);
         this.game.getUiController().showDialogue(this.dialogue);
+        if (npc.dialogueInProgress) {
+            this.game.getUiController().blockDialogueInterface();
+
+            npc.dialogueInProgress.then(() => {
+                this.game.getUiController().unblockDialogueInterface();
+            })
+        }
+    }
+
+    endDialogue() {
+        super.endDialogue();
+        this.game.getUiController().hideDialogue();
     }
 
     playSound(sound) {
         this.game.getConnection().send("playSound", {"sound": sound})
         return super.playSound(sound);
+    }
+
+    pickDialogue(dialogueId, option, npc) {
+        return new Promise((resolve, fail) => {
+            this.game.getConnection().send("pickDialogue", {"dialogueId": dialogueId, "option": option, "npc": npc.getId()});
+            const stateKey = "state.dialogues." + dialogueId + "." + option;
+
+            // Save local
+            let value = this.get(stateKey) || 0;
+            this.set(stateKey, value + 1);
+
+            // Save world
+            value = this.game.getWorldState().get(stateKey) || 0;
+            this.game.getWorldState().set(stateKey, value + 1)
+            return super.pickDialogue(dialogueId, option, npc);
+        });
     }
 }

@@ -1,9 +1,10 @@
-from lastdays.models import Player, Room
+from lastdays.models import Player, Room, World
 from lastdays.game import config
 from django.utils import timezone
 from lastdays import engine_settings
 import os
 import yaml
+import json
 
 
 def color_generator():
@@ -47,8 +48,21 @@ def reset_game_state():
     for player in Player.objects.all():
         player.delete()
 
+    for world in World.objects.all():
+        world.delete()
+
     for roomId in os.listdir("game/rooms"):
         with open("game/rooms/%s/%s.yaml" % (roomId, roomId)) as o:
             room_config = yaml.load(o.read())
             room = Room(id=roomId, state=room_config.get("default_state", {}))
             room.save()
+
+
+def send_to_all(subject, content):
+    from channels import Group
+    Group("__ALL__").send({
+        "text": json.dumps({
+            "subject": subject,
+            "content": content
+        })
+    })
