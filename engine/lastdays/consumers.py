@@ -1,12 +1,17 @@
 from lastdays.utils import extract_player_from_path
 import json
 from lastdays import responders
+from django.db import transaction
 
 
 RESPONDERS = {
     "ping": responders.ping,
     "move": responders.move,
-    "talk": responders.talk
+    "talk": responders.talk,
+    "setPlayerVariable": responders.setPlayerVariable,
+    "removeFromInventory": responders.removeFromInventory,
+    "addToInventory": responders.addToInventory,
+    "setDirection": responders.setDirection
 }
 
 
@@ -23,11 +28,16 @@ def ws_disconnect(message):
 
 
 def ws_message(message):
-    player = extract_player_from_path(message.content["path"])
-    command = json.loads(message.content["text"])
-    subject = command.get("subject")
-    content = command.get("content")
-    if subject in RESPONDERS:
-        RESPONDERS[subject](player, subject, content)
-    else:
-        print("Unknown subject: %s" % subject)
+    try:
+        with transaction.atomic():
+            player = extract_player_from_path(message.content["path"])
+            command = json.loads(message.content["text"])
+            subject = command.get("subject")
+            content = command.get("content")
+            if subject in RESPONDERS:
+                RESPONDERS[subject](player, subject, content)
+            else:
+                print("Unknown subject: %s" % subject)
+    except Exception as e:
+        print("OH NO")
+        print(e)

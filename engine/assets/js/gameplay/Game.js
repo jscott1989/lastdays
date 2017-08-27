@@ -4,6 +4,7 @@ import Datastore from "./data/Datastore.js";
 import Renderer from "../rendering/Renderer.js";
 import LocalPlayer from "./LocalPlayer.js";
 import Room from "./Room.js";
+import ActionExecutor from "./ActionExecutor.js";
 
 
 /**
@@ -18,6 +19,7 @@ export default class Game {
         this.renderer = new Renderer(this);
         this.renderer.clickEvents.subscribe(this._click.bind(this))
         this.uiController = new UIController(this);
+        this.actionExecutor = new ActionExecutor(this);
 
         this.debugMode = debugMode;
         if (debugMode) {
@@ -27,10 +29,7 @@ export default class Game {
         // Game state
         // First is configuration and content types
         this.configuration = new Datastore();
-
-        // Then world state
-
-        // Room state
+        this.worldState = new Datastore();
 
         this.debugMessage("Starting in debug mode. Disable this before going live.");
     }
@@ -81,7 +80,7 @@ export default class Game {
     _refresh(refreshContent) {
         // A refresh message has been received, all data should be cleared and the state
         // reset based on the content
-        // TODO: World
+        this.worldState.setData(refreshContent.world);
         this.loadPlayer(refreshContent.player);
         this.loadRoom(refreshContent.room);
     }
@@ -92,7 +91,30 @@ export default class Game {
             return;
         } else if (content.button == "RIGHT" && this.hoveredObject != null) {
             // Look at something
-            this.executeActions(this.hoveredObject.hoverable.getLookAt());
+            this.actionExecutor.executeActions(this.hoveredObject.hoverable.getLookAt(), this.player);
+            return;
+        } else if (this.hoveredObject != null) {
+            // We need to walk to the object and then interact
+            const hoveredObject = this.hoveredObject;
+            const selectedItem = this.selectedItem;
+
+            let x;
+            let y;
+            let direction;
+            const interactLocation = this.hoveredObject.hoverable.getInteractLocation();
+            if (interactLocation != null) {
+                [x, y, direction] = [interactLocation.x, interactLocation.y, interactLocation.direction];
+            } else {
+                [x, y] = this.room.getNearestWalkablePoint(content.x, content.y, this.player.sprite.x, this.player.sprite.y);
+            }
+
+            this.player.move(x, y, direction).then(() => {
+                const interactKey = selectedItem || "interact";
+                this.actionExecutor.executeActions(hoveredObject.hoverable.getInteract(interactKey), this.player);
+            });
+
+            this.selectItem(null);
+
             return;
         }
         
@@ -184,20 +206,19 @@ export default class Game {
         this.uiController.refreshInventory();
     }
 
+    getUiController() {
+        return this.uiController;
+    }
+
     getSelectedItem() {
         return this.selectedItem;
     }
 
-    executeActions(actions, index) {
-        index = index || 0;
+    getActionExecutor() {
+        return this.actionExecutor;
+    }
 
-        if (index >= actions.length) {
-            return;
-        }
-
-        const action = actions[index];
-        if (action.type == "talk") {
-            this.player.talk(action.text).then(() => this.executeActions(actions, index + 1));
-        }
+    getWorldState() {
+        return this.worldState;
     }
 }

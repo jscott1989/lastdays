@@ -108,7 +108,7 @@ export default class UIController {
         const item = this.game.getConfiguration().get("inventoryitems")[itemType];
         if (e.button == 2) {
             // Look at
-            this.game.executeActions(item.lookAt);
+            this.game.getActionExecutor().executeActions(item.lookAt, this.game.getPlayer());
             return;
         }
 

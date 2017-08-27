@@ -7,3 +7,5 @@ starting_location:
   direction: up
 starting_inventory:
   euro: 6
+initial_player_state:
+  insertedEuros: 0

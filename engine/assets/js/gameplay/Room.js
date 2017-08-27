@@ -4,23 +4,23 @@ import NPC from "./NPC.js";
 import EasyStar from "easystarjs";
 
 function calcStraightLine (startCoordinates, endCoordinates) {
-    var coordinatesArray = new Array();
+    let coordinatesArray = new Array();
     // Translate coordinates
-    var x1 = startCoordinates[0];
-    var y1 = startCoordinates[1];
-    var x2 = endCoordinates[0];
-    var y2 = endCoordinates[1];
+    let x1 = startCoordinates[0];
+    let y1 = startCoordinates[1];
+    let x2 = endCoordinates[0];
+    let y2 = endCoordinates[1];
     // Define differences and error check
-    var dx = Math.abs(x2 - x1);
-    var dy = Math.abs(y2 - y1);
-    var sx = (x1 < x2) ? 1 : -1;
-    var sy = (y1 < y2) ? 1 : -1;
-    var err = dx - dy;
+    let dx = Math.abs(x2 - x1);
+    let dy = Math.abs(y2 - y1);
+    let sx = (x1 < x2) ? 1 : -1;
+    let sy = (y1 < y2) ? 1 : -1;
+    let err = dx - dy;
     // Set first coordinates
     coordinatesArray.push([x1, y1]);
     // Main loop
     while (!((x1 == x2) && (y1 == y2))) {
-      var e2 = err << 1;
+      let e2 = err << 1;
       if (e2 > -dy) {
         err -= dy;
         x1 += sx;
@@ -50,8 +50,9 @@ export default class Room {
         // End sprites
 
         // We bind the callbacks for subscriptions
-        this._add_player = this._add_player.bind(this);
-        this._remove_player = this._remove_player.bind(this);
+        this._addPlayer = this._addPlayer.bind(this);
+        this._removePlayer = this._removePlayer.bind(this);
+        this._setDirection = this._setDirection.bind(this);
         this._move = this._move.bind(this);
         this._talk = this._talk.bind(this);
         // End binding
@@ -65,9 +66,11 @@ export default class Room {
         this.npcs.forEach(npc => npc.destroy());
         this.npcs.forEach(hotspot => hotspot.destroy());
 
-        this.game.getConnection().messagesObservable.unsubscribe("add_player", this._add_player);
-        this.game.getConnection().messagesObservable.unsubscribe("remove_player", this._remove_player);
+        this.game.getConnection().messagesObservable.unsubscribe("addPlayer", this._addPlayer);
+        this.game.getConnection().messagesObservable.unsubscribe("removePlayer", this._removePlayer);
         this.game.getConnection().messagesObservable.unsubscribe("move", this._move);
+        this.game.getConnection().messagesObservable.unsubscribe("talk", this._talk);
+        this.game.getConnection().messagesObservable.unsubscribe("setDirection", this._setDirection);
     }
 
     load(data) {
@@ -90,10 +93,10 @@ export default class Room {
         const bmdata = bmd.data;
 
         this.map = []
-        var i = 0;
-        for (var y = 0; y < this.height; y++) {
-            var r = [];
-            for (var x = 0; x < this.width; x++) {
+        let i = 0;
+        for (let y = 0; y < this.height; y++) {
+            let r = [];
+            for (let x = 0; x < this.width; x++) {
                 if (bmdata[i + 3] > 0) {
                     // Visible
                     r.push(1);
@@ -127,13 +130,14 @@ export default class Room {
             this.hotspots.set(hotspot.id, new Hotspot(this.game, hotspot));
         });
 
-        this.game.getConnection().messagesObservable.subscribe("add_player", this._add_player);
-        this.game.getConnection().messagesObservable.subscribe("remove_player", this._remove_player);
+        this.game.getConnection().messagesObservable.subscribe("addPlayer", this._addPlayer);
+        this.game.getConnection().messagesObservable.subscribe("removePlayer", this._removePlayer);
         this.game.getConnection().messagesObservable.subscribe("move", this._move);
         this.game.getConnection().messagesObservable.subscribe("talk", this._talk);
+        this.game.getConnection().messagesObservable.subscribe("setDirection", this._setDirection);
     }
 
-    _add_player(subject, content) {
+    _addPlayer(subject, content) {
         if (content.player.id === this.game.getPlayer().getId()) {
             // We don't need to add ourselves
             return;
@@ -142,7 +146,7 @@ export default class Room {
         this.players.set(content.player.id, new Player(this.game, content.player));
     }
 
-    _remove_player(subject, content) {
+    _removePlayer(subject, content) {
         if (content.player === this.game.getPlayer().getId()) {
             // We don't need to remove ourselves
             return;
@@ -157,7 +161,16 @@ export default class Room {
             return;
         }
 
-        this.players.get(content.player).move(content.x, content.y);
+        this.players.get(content.player).move(content.x, content.y, content.direction);
+    }
+
+    _setDirection(subject, content) {
+        if (content.player == this.game.getPlayer().getId()) {
+            // We initiated the set direction - don't repeat it
+            return;
+        }
+
+        this.players.get(content.player).setDirection(content.direction);
     }
 
     _talk(subject, content) {
@@ -210,7 +223,7 @@ export default class Room {
         const targetPosition = [x, y];
         const possibleCoordinates = calcStraightLine(targetPosition, currentPosition);
 
-        for (var c in possibleCoordinates) {
+        for (const c in possibleCoordinates) {
             const coordinate = possibleCoordinates[c];
             if (this.map[coordinate[1]][coordinate[0]] > 0) {
                 // Can use this one

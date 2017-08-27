@@ -131,14 +131,14 @@ export default class Renderer {
 
     addHotspotSprite(x, y, width, height) {
         const bmd = this.phaser.add.bitmapData(width, height);
-        if (this.game.debugMode) {
-            bmd.ctx.beginPath();
-            bmd.ctx.rect(0,0,width,height);
-            bmd.ctx.fillStyle = 'rgba(255,0,0,0.5)';
-            bmd.ctx.fill();
-        }
+        // if (this.game.debugMode) {
+        //     bmd.ctx.beginPath();
+        //     bmd.ctx.rect(0,0,width,height);
+        //     bmd.ctx.fillStyle = 'rgba(255,0,0,0.5)';
+        //     bmd.ctx.fill();
+        // }
 
-        var hotspotSprite = this.phaser.add.sprite(x, y, bmd);
+        const hotspotSprite = this.phaser.add.sprite(x, y, bmd);
         this.hotspots.add(hotspotSprite);
 
         return hotspotSprite;

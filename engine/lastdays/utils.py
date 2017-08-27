@@ -25,6 +25,7 @@ def extract_player_from_path(path):
                 "character": config["default_character"],
                 "location": config["starting_location"],
                 "inventory": config["starting_inventory"],
+                "state": config["initial_player_state"]
             },
             "last_action": timezone.now()
         }

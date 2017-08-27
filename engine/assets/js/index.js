@@ -6,7 +6,7 @@ $(document).bind("contextmenu", (e) => false);
 
 $(document).ready(() => {
     // Initialise the game
-    var localIdentity = new LocalIdentity();
+    const localIdentity = new LocalIdentity();
     window.game = new Game(localIdentity, true);
     game.start();
 });

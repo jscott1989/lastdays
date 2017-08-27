@@ -55,7 +55,7 @@ class Player(models.Model):
 
         self.save()
         self.refresh(channel)
-        self.send_to_room("add_player", {
+        self.send_to_room("addPlayer", {
             "player": self.player_data()
         })
 
@@ -82,7 +82,7 @@ class Player(models.Model):
     def disconnect(self):
         self.connected = False
         self.save()
-        self.send_to_room("remove_player", {
+        self.send_to_room("removePlayer", {
             "player": self.id
         })
 

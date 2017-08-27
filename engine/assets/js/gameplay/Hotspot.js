@@ -1,4 +1,4 @@
-const SMOOTHING_AMOUNT = 500;
+import Datastore from "./data/Datastore.js";
 
 export default class Character {
     constructor(game, data) {
@@ -15,7 +15,11 @@ export default class Character {
     }
 
     get(key) {
-        return this.data[key]
+        return Datastore.get(this.data, key);
+    }
+
+    set(key, value) {
+        return Datastore.set(this.data, key, value);
     }
 
     destroy() {
@@ -36,5 +40,15 @@ export default class Character {
 
     getLookAt() {
         return this.game.getConfiguration().get("hotspots")[this.data.type].lookAt;
+    }
+
+    getInteract(key) {
+        key = key || "interact";
+        return this.game.getConfiguration().get("hotspots")[this.data.type][key];
+    }
+
+    getInteractLocation() {
+        console.log(this.data);
+        return this.data.interactLocation;
     }
 }

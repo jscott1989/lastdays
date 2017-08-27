@@ -1,4 +1,5 @@
 const SMOOTHING_AMOUNT = 500;
+import Datastore from "./data/Datastore.js";
 
 export default class Character {
     constructor(game, data) {
@@ -22,17 +23,32 @@ export default class Character {
         }
     }
     get(key) {
-        return this.data[key]
+        return Datastore.get(this.data, key);
     }
 
-    move(x, y) {
-        this.data.location.x = x;
-        this.data.location.y = y;
+    set(key, value) {
+        return Datastore.set(this.data, key, value);
+    }
 
-        this.game.getRoom().findPath(this.sprite.x, this.sprite.y, x, y).then((path) => {
-            this.movingPath = path;
-            this.pathPointer = 0;
+    move(x, y, direction) {
+        return new Promise((resolve, fail) => {
+            this.data.location.x = x;
+            this.data.location.y = y;
+
+            this.moveDirection = direction;
+            this.moveCallback = resolve;
+
+            this.game.getRoom().findPath(this.sprite.x, this.sprite.y, x, y).then((path) => {
+                this.movingPath = path;
+                this.pathPointer = 0;
+            });
         });
+    }
+
+    setDirection(direction) {
+        this.direction = direction;
+        const defaultAnimation = this.data.animation || "idle";
+        this.sprite.animations.play(defaultAnimation + '-' + this.direction)
     }
 
     destroy() {
@@ -73,7 +89,7 @@ export default class Character {
             const next = this.movingPath[this.pathPointer];
             this.pathPointer += 1;
 
-            var next_direction = this.direction;
+            let next_direction = this.direction;
 
             if (next.x < this.sprite.x) {
                 if (this.sprite.scale.x > 0) {
@@ -94,10 +110,10 @@ export default class Character {
             if (next_direction != this.direction) {
                 // We're going to switch - to ensure we do it smoothly
                 // make sure we're not going to just switch back
-                var changeCount = 0;
+                let changeCount = 0;
                 const lpos = [next.x, next.y];
-                for (var i = this.pathPointer; i < this.pathPointer + SMOOTHING_AMOUNT && i < this.movingPath.length; i++) {
-                    var p = this.movingPath[this.pathPointer];
+                for (let i = this.pathPointer; i < this.pathPointer + SMOOTHING_AMOUNT && i < this.movingPath.length; i++) {
+                    const p = this.movingPath[this.pathPointer];
                     if (p.x < lpos[0]) {
                         // left
                         if (next_direction == "left") {
@@ -142,8 +158,19 @@ export default class Character {
         } else {
             // Just finished
             this.movingPath = null;
+
+            if (this.moveDirection != null) {
+                this.direction = this.moveDirection;
+                this.moveDirection = null;
+            }
+
             const direction = (this.direction == "left" || this.direction == "right") ? "side" : this.direction;
-            this.sprite.animations.play('idle-' + direction)
+            this.sprite.animations.play('idle-' + direction);
+
+            if (this.moveCallback != null) {
+                this.moveCallback();
+                this.moveCallback = null;
+            }
         }
     }
 
@@ -177,5 +204,10 @@ export default class Character {
 
     getLookAt() {
         return this.game.getConfiguration().get("characters")[this.data.character].lookAt;
+    }
+
+    getInteract(key) {
+        key = key || "interact";
+        return this.game.getConfiguration().get("characters")[this.data.character][key];
     }
 }

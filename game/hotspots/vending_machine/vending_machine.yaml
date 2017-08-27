@@ -2,3 +2,47 @@ name: Vending Machine
 lookAt:
   - type: talk
     text: The vending machine says "Soda €3"
+interact:
+  - type: condition
+    options:
+      - condition: "@state.insertedEuros >= 3 && @state.purchasedSoda"
+        actions:
+          - type: talk
+            text: I don't want any more soda
+      - condition: "@state.insertedEuros >= 3"
+        actions:
+          - type: addToInventory
+            item: soda
+          - type: setVariable
+            variable: "@state.purchasedSoda"
+            value: true
+      - condition: "@state.insertedEuros == 2"
+        actions:
+          - type: talk
+            text: I need to insert one more Euro for a soda
+      - condition: "@state.insertedEuros == 1"
+        actions:
+          - type: talk
+            text: I need to insert two more Euros for a soda
+      - condition: default
+        actions:
+          - type: talk
+            text: I need to insert three Euros for a soda
+euro:
+  - type: condition
+    options:
+      - condition: "@state.insertedEuros >= 3 && @state.purchasedSoda"
+        actions:
+          - type: talk
+            text: I don't want any more soda
+      - condition: "@state.insertedEuros >= 3"
+        actions:
+          - type: talk
+            text: I don't need to insert any more coins
+      - condition: default
+        actions:
+          - type: removeFromInventory
+            item: euro
+          - type: setVariable
+            variable: "@state.insertedEuros"
+            value: "@state.insertedEuros + 1"

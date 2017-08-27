@@ -1,4 +1,4 @@
-name: \"Diet\" Soda
+name: '"Diet" Soda'
 image: inventoryitems/dietsoda/dietsoda.png
 lookAt:
   - type: talk

@@ -2,3 +2,13 @@ name: Pen
 lookAt:
   - type: talk
     text: It's a blue pen. Attached to the desk by a little chain.
+  - type: talk
+    text: Do they think I'd want to steal a pen?
+interact:
+  - type: talk
+    text: I tried pulling the pen, but the chain held it tight.
+soda:
+  - type: removeFromInventory
+    item: soda
+  - type: addToInventory
+    item: dietsoda
