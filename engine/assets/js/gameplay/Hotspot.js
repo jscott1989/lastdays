@@ -1,6 +1,6 @@
 import Datastore from "./data/Datastore.js";
 
-export default class Character {
+export default class Hotspot {
     constructor(game, data) {
         this.game = game;
         this.data = data;

@@ -28,7 +28,6 @@ export default class ActionExecutor {
     }
 
     _talk(action, player) {
-        console.log("Making player talk", player, action.text);
         return player.talk(action.text);
     }
 
@@ -40,7 +39,7 @@ export default class ActionExecutor {
         return new Promise((resolve, fail) => {
             for (const i in action.options) {
                 const option = action.options[i];
-                if (this._evaluateCondition(option.condition, player, this.game)) {
+                if (ActionExecutor.evaluateCondition(option.condition, player, this.game)) {
                     this.executeActions(option.actions, player, context).then(resolve);
                     return;
                 }
