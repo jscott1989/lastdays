@@ -20,9 +20,9 @@ RESPONDERS = {
 
 @transaction.atomic()
 def ws_connect(message):
+    message.reply_channel.send({"accept": True})
     player = extract_player_from_path(message.content["path"])
     player.connect(message.reply_channel)
-    message.reply_channel.send({"accept": True})
 
 
 @transaction.atomic()
