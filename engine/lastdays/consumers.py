@@ -14,19 +14,21 @@ RESPONDERS = {
     "setDirection": responders.setDirection
 }
 
-
+@transaction.atomic()
 def ws_connect(message):
     player = extract_player_from_path(message.content["path"])
     player.connect(message.reply_channel)
     message.reply_channel.send({"accept": True})
 
 
+@transaction.atomic()
 def ws_disconnect(message):
     print("DISCONNECTING")
     player = extract_player_from_path(message.content["path"])
     player.disconnect()
 
 
+@transaction.atomic()
 def ws_message(message):
     try:
         with transaction.atomic():

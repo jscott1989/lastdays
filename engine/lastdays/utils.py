@@ -18,7 +18,7 @@ get_next_color = color_generator()
 def extract_player_from_path(path):
     player_id = path[4:]
 
-    player, created = Player.objects.get_or_create(
+    player, created = Player.objects.select_for_update().get_or_create(
         id=player_id,
         defaults={
             "data": {
@@ -34,8 +34,8 @@ def extract_player_from_path(path):
     if created:
         player.data["color"] = get_next_color.__next__()
         player.save()
-
     return player
+
 
 def reset_game_state():
     # For now we assume nobody is playing
