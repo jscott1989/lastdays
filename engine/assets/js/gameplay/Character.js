@@ -210,4 +210,8 @@ export default class Character {
         key = key || "interact";
         return this.game.getConfiguration().get("characters")[this.data.character][key];
     }
+
+    getInteractLocation() {
+        return null;
+    }
 }

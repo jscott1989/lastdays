@@ -80,8 +80,9 @@ export default class UIController {
         }
 
         const inventory = this.game.player.get("inventory");
-
-        Object.keys(inventory).forEach(inventoryItemType => {
+        const items = Object.keys(inventory);
+        items.sort()
+        items.forEach(inventoryItemType => {
             const inventoryItemNumber = inventory[inventoryItemType];
             const item = this.game.getConfiguration().get("inventoryitems")[inventoryItemType]
             const li = $(`<li data-item-type="${inventoryItemType}">
@@ -108,7 +109,7 @@ export default class UIController {
         const item = this.game.getConfiguration().get("inventoryitems")[itemType];
         if (e.button == 2) {
             // Look at
-            this.game.getActionExecutor().executeActions(item.lookAt, this.game.getPlayer());
+            this.game.getActionExecutor().executeActions(item.lookAt, this.game.getPlayer(), item);
             return;
         }
 
@@ -131,6 +132,47 @@ export default class UIController {
     _mousedown(e) {
         if (e.button == 2 && this.game.getSelectedItem() != null) {
             this.game.selectItem(null);
+        }
+    }
+
+    showDialogue(dialogue) {
+        this.hideDialogue();
+
+        this.dialogue = $(`<div id="dialogue">
+            <div class="options">
+                <ul>
+                </ul>
+                <div class="right">
+                    <ul>
+                        <li data-option="exit">
+                            <img src="/static/dialogues/default/bye.png">
+                            <span class="hoverText">Exit</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>`);
+
+        this.dialogue.dialogue = dialogue;
+
+        this.dialogue.find("li").click((e) => {
+            const option = $(e.target).parent().data("option");
+            this.dialogue.dialogue.pick(option);
+        });
+
+        $("#game-container").append(this.dialogue);
+        this.game.setHoveredObject(null);
+
+        //<li data-option="la">
+        //     <img src="/static/inventoryItems/euro/euro.png">
+        //     <span class="hoverText">Euro</span>
+        // </li>
+    }
+
+    hideDialogue() {
+        if (this.dialogue != null) {
+            this.dialogue.remove();
+            this.dialogue = null;
         }
     }
 }

@@ -91,7 +91,7 @@ export default class Game {
             return;
         } else if (content.button == "RIGHT" && this.hoveredObject != null) {
             // Look at something
-            this.actionExecutor.executeActions(this.hoveredObject.hoverable.getLookAt(), this.player);
+            this.actionExecutor.executeActions(this.hoveredObject.hoverable.getLookAt(), this.player, this.hoveredObject.hoverable);
             return;
         } else if (this.hoveredObject != null) {
             // We need to walk to the object and then interact
@@ -110,7 +110,7 @@ export default class Game {
 
             this.player.move(x, y, direction).then(() => {
                 const interactKey = selectedItem || "interact";
-                this.actionExecutor.executeActions(hoveredObject.hoverable.getInteract(interactKey), this.player);
+                this.actionExecutor.executeActions(hoveredObject.hoverable.getInteract(interactKey), this.player, this.hoveredObject.hoverable);
             });
 
             this.selectItem(null);

@@ -52,3 +52,6 @@ animations:
 lookAt:
   - type: talk
     text: He seems very excited by the "Earth" escape room.
+interact:
+  - type: beginDialogue
+    dialogue: welcome_dialogue

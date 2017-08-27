@@ -37,4 +37,9 @@ export default class LocalPlayer extends Player {
         this.game.getConnection().send("setDirection", {"direction": direction})
         super.setDirection(direction);
     }
+
+    beginDialogue(participant2, dialogueId) {
+        super.beginDialogue(participant2, dialogueId);
+        this.game.getUiController().showDialogue(this.dialogue);
+    }
 }

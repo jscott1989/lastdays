@@ -173,3 +173,76 @@ body {
     position: absolute;
 }
 // End Selected Item
+
+
+// Dialogue
+#dialogue {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 800px;
+    height: 600px;
+
+    .options {
+        position: absolute;
+        height: 90px;
+        width: 760px;
+        background: rgba(0, 0, 0, 0.5);
+        bottom: 0px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 10px;
+    }
+
+        ul, li {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        float: left;
+        position: relative;
+        cursor: pointer;
+
+        .number {
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+        }
+
+        .number-1 {
+            display: none;
+        }
+
+        .hoverText {
+            display: none;
+            position: absolute;
+            bottom: -20px;
+            left: 0px;
+            width: 100%;
+            text-align: center;
+            color: #112266;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: #000000;
+        }
+
+
+        &:hover {
+            .hoverText {
+                display: block;
+            }
+        }
+
+        &.selected {
+            border: 2px solid black;
+        }
+
+    }
+
+    .right {
+        position: absolute;
+        right: 20px;
+    }
+}
+// End Dialogue

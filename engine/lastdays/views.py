@@ -11,7 +11,7 @@ def index(request):
 def configuration(request):
     configuration = {}
 
-    for t in ["rooms", "characters", "hotspots", "inventoryitems"]:
+    for t in ["rooms", "characters", "hotspots", "inventoryitems", "dialogues"]:
         configuration[t] = {}
         for r in os.listdir("game/%s" % t):
             with open("game/%s/%s/%s.yaml" % (t, r, r)) as o:

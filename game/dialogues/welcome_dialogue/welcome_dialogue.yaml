@@ -1,0 +1,20 @@
+hello:
+  actions:
+    -
+      action: talk
+      participant: 1
+      text: Hi
+    -
+      action: talk
+      participant: 2
+      text: Hello and welcome to Other World Escape
+    -
+      action: talk
+      participant: 2
+      text: The number one escape experience this side of Epsilon Eridani!
+otherworldescapes:
+  actions:
+    -
+      action: talk
+      participant: 1
+      text: Other

@@ -7,15 +7,16 @@ export default class ActionExecutor {
             "condition": this._condition.bind(this),
             "removeFromInventory": this._removeFromInventory.bind(this),
             "addToInventory": this._addToInventory.bind(this),
-            "setVariable": this._setVariable.bind(this)
+            "setVariable": this._setVariable.bind(this),
+            "beginDialogue": this._beginDialogue.bind(this)
         }
     }
 
-    executeActions(actions, player) {
+    executeActions(actions, player, context) {
         return new Promise((resolve, fail) => {
             var result = Promise.resolve();
             actions.forEach(action => {
-                result = result.then(() => this.ACTIONS[action.type](action, player));
+                result = result.then(() => this.ACTIONS[action.type](action, player, context));
             });
             resolve();
         });
@@ -25,12 +26,12 @@ export default class ActionExecutor {
         return player.talk(action.text);
     }
 
-    _condition(action, player) {
+    _condition(action, player, context) {
         return new Promise((resolve, fail) => {
             for (const i in action.options) {
                 const option = action.options[i];
                 if (this._evaluateCondition(option.condition, player)) {
-                    this.executeActions(option.actions, player).then(resolve);
+                    this.executeActions(option.actions, player, context).then(resolve);
                     return;
                 }
             }
@@ -64,31 +65,29 @@ export default class ActionExecutor {
     }
 
     _removeFromInventory(action, player) {
-        return new Promise((resolve, fail) => {
-            player.removeFromInventory(action.item)
-            resolve();
-        })
+        player.removeFromInventory(action.item)
+        return Promise.resolve();
     }
 
     _addToInventory(action, player) {
-        return new Promise((resolve, fail) => {
-            player.addToInventory(action.item)
-            resolve();
-        })
+        player.addToInventory(action.item)
+        return Promise.resolve();
     }
 
     _setVariable(action, player) {
-        return new Promise((resolve, fail) => {
-            const value = eval(this._formatReadString(action.value));
-            
-            const localRegex = /@([\w\.]+)/g;
-            const localRegexReplacement = "player.set(\"$1\", " + value + ")";
+        const value = eval(this._formatReadString(action.value));
+        
+        const localRegex = /@([\w\.]+)/g;
+        const localRegexReplacement = "player.set(\"$1\", " + value + ")";
 
-            const worldRegex = /\^([\w\.]+)/g;
-            const worldRegexReplacement = "this.game.getWorldState().set(\"$1\", " + value + ")";
+        const worldRegex = /\^([\w\.]+)/g;
+        const worldRegexReplacement = "this.game.getWorldState().set(\"$1\", " + value + ")";
 
-            eval(action.variable.replace(localRegex, localRegexReplacement).replace(worldRegex, worldRegexReplacement));
-            resolve();
-        });
+        eval(action.variable.replace(localRegex, localRegexReplacement).replace(worldRegex, worldRegexReplacement));
+        return Promise.resolve();
+    }
+
+    _beginDialogue(action, player, context) {
+        return player.beginDialogue(context, action.dialogue);
     }
 }

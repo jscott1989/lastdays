@@ -1,4 +1,5 @@
 import Character from "./Character.js";
+import Dialogue from "./Dialogue.js";
 
 export default class Player extends Character {
     removeFromInventory(item) {
@@ -13,5 +14,9 @@ export default class Player extends Character {
             this.data.inventory[item] = 0;
         }
         this.data.inventory[item] += 1;
+    }
+
+    beginDialogue(participant2, dialogueId) {
+        this.dialogue = new Dialogue(this.game, this, participant2, dialogueId);
     }
 }

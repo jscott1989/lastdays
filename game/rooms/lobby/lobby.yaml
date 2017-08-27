@@ -13,18 +13,30 @@ default_state:
         x: 300
         y: 400
         direction: down
+      interactLocation:
+        x: 339
+        y: 425
+        direction: up
     - id: receptionist
       character: receptionist
       location:
         x: 699
         y: 270
         direction: down
+      interactLocation:
+        x: 713
+        y: 285
+        direction: up
     - id: thirsty
       character: thirsty_alien
       location:
         x: 24
         y: 354
         direction: right
+      interactLocation:
+        x: 104
+        y: 346
+        direction: left
   hotspots:
     - id: sign1
       type: sign
