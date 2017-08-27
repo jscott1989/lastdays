@@ -1,5 +1,5 @@
 name: Receptionist
-color: #000000
+color: "#ff35e0"
 sprite: characters/alien/alien.png
 width: 256
 height: 386
@@ -52,3 +52,6 @@ animations:
 lookAt:
   - type: talk
     text: The tall alien looked busy... texting her friends
+interact:
+  - type: beginDialogue
+    dialogue: reception_dialogue

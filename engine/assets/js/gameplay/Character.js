@@ -189,7 +189,7 @@ export default class Character {
                 0,
                 0, text, {
                     font: "18px Press Start 2P",
-                    fill: this.data.color,
+                    fill: this.getColor(),
                     align: "center",
                     wordWrap: true,
                     wordWrapWidth: 300,
@@ -218,5 +218,9 @@ export default class Character {
 
     getInteractLocation() {
         return null;
+    }
+
+    getColor() {
+        return this.data.color;
     }
 }

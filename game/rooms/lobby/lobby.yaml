@@ -27,15 +27,15 @@ default_state:
         x: 713
         y: 285
         direction: up
-    - id: thirsty
-      character: thirsty_alien
+    - id: perrogh
+      character: perrogh
       location:
-        x: 24
-        y: 354
+        x: 140
+        y: 368
         direction: right
       interactLocation:
-        x: 104
-        y: 346
+        x: 219
+        y: 349
         direction: left
   hotspots:
     - id: sign1

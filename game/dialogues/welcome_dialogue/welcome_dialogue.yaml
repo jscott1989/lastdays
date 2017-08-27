@@ -20,4 +20,8 @@ euro:
     -
       participant: 2
       type: talk
-      text: Oh no no. I don't deal with money.
+      text: Oh no no. I don't deal with money
+    -
+      participant: 2
+      type: talk
+      text: Talk to the reception desk about that

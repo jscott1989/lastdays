@@ -1,0 +1,42 @@
+hello:
+  image: dialogues/welcome_dialogue/hello.png
+  onceOnly: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: Hi
+    -
+      participant: 2
+      type: talk
+      text: Hello
+money:
+  hover: Cost
+  image: inventoryitems/euro/euro.png
+  onceOnly: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: How much is it to the enter the game?
+    -
+      participant: 2
+      type: talk
+      text: The only game open right now is The Last Days of Earth
+    -
+      participant: 2
+      type: talk
+      text: It's €13
+money2:
+  hover: Cost
+  image: inventoryitems/euro/euro.png
+  condition: "@state.dialogues.reception_dialogue.money"
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: €13? That's crazy
+    -
+      participant: 2
+      type: talk
+      text: The price is the price, sir

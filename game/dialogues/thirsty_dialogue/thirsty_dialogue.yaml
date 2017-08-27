@@ -1,0 +1,135 @@
+hello:
+  image: dialogues/welcome_dialogue/hello.png
+  onceOnly: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: Hi
+    -
+      participant: 2
+      type: talk
+      text: Well hello there
+    -
+      participant: 2
+      type: talk
+      text: I'm Perrogh Zekmumt
+perrogh:
+  image: dialogues/thirsty_dialogue/perrogh.png
+  condition: "@state.dialogues.thirsty_dialogue.hello > 0"
+  onceOnly: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: You're Perrogh Zekmumt?
+    -
+      participant: 2
+      type: talk
+      text: Yes. Have you heard of me?
+    -
+      participant: 1
+      type: talk
+      text: "No"
+thirsty:
+  image: dialogues/thirsty_dialogue/perrogh.png
+  condition: "@state.dialogues.thirsty_dialogue.perrogh > 0"
+  onceOnly: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: What are you doing here, Perrogh Zekmunt?
+    -
+      participant: 2
+      type: talk
+      text: I'm about to return to the games, but I'm feeling thirsty.
+    -
+      participant: 2
+      type: talk
+      text: You wouldn't know where I could find a diet soda, would you?
+euro:
+  item: true
+  actions:
+    -
+      participant: 2
+      type: talk
+      text: I have no need for your money
+    -
+      participant: 2
+      type: talk
+      text: I'm extremely rich
+soda:
+  item: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: I got you a soda
+    -
+      participant: 2
+      type: talk
+      text: Thank you but you can't really expect me to drink that
+    -
+      participant: 2
+      type: talk
+      text: It would play havoc with my figure
+dietsoda:
+  item: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: How's this?
+    -
+      participant: 1
+      type: removeFromInventory
+      item: dietsoda
+    -
+      participant: 2
+      type: talk
+      text: Wonderful! This is perfect.
+    -
+      participant: 1
+      type: addToInventory
+      item: euro
+    -
+      participant: 1
+      type: addToInventory
+      item: euro
+    -
+      participant: 1
+      type: addToInventory
+      item: euro
+    -
+      participant: 1
+      type: addToInventory
+      item: euro
+    -
+      participant: 1
+      type: addToInventory
+      item: euro
+    -
+      participant: 1
+      type: addToInventory
+      item: euro
+    -
+      participant: 1
+      type: addToInventory
+      item: euro
+    -
+      participant: 1
+      type: addToInventory
+      item: euro
+    -
+      participant: 1
+      type: addToInventory
+      item: euro
+    -
+      participant: 1
+      type: addToInventory
+      item: euro
+    -
+      participant: 2
+      type: talk
+      text: Take this for your trouble
