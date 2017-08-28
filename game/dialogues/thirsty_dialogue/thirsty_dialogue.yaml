@@ -51,6 +51,23 @@ thirsty:
       participant: 2
       type: talk
       text: You wouldn't know where I could find a diet soda, would you?
+thirsty2:
+  hover: Perrogh
+  image: dialogues/thirsty_dialogue/perrogh.png
+  condition: "@state.dialogues.thirsty_dialogue.thirsty > 0"
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: How thirsty are you?
+    -
+      participant: 2
+      type: talk
+      text: I'm incredibly thirsty
+    -
+      participant: 2
+      type: talk
+      text: and incredibly rich
 euro:
   item: true
   actions:

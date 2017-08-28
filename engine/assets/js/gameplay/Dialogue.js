@@ -33,7 +33,8 @@ export default class Dialogue {
         }).map((option) => {
             return {
                 "option": option,
-                "image": this.script[option].image
+                "image": this.script[option].image,
+                "hover": this.script[option].hover
             }
         });
     }
