@@ -10,14 +10,17 @@ export default class Renderer {
     }
 
     initialise() {
+        this.game.getUiController().showModal("preloading", "Loading assets");
         const promise = new Promise((resolve, fail) => {
             this.phaser = new Phaser.Game(
                 800, 600,
                 Phaser.CANVAS,
                 "game", 
                 { preload: () => {
-                    this._preload();
-                    resolve();
+                    this._preload().then(() => {
+                        this.game.getUiController().hideModal("preloading");
+                        resolve();
+                    });
                 },
                 update: () => this._update()}
             );
@@ -26,37 +29,42 @@ export default class Renderer {
     }
 
     _preload() {
-        this.phaser.stage.disableVisibilityChange = true;
-        this.background = this.phaser.add.group();
-        this.hotspots = this.phaser.add.group();
-        this.sprites = this.phaser.add.group();
+        return new Promise((resolve, fail) => {
+            this.phaser.load.onLoadComplete.add(resolve);
+            this.phaser.stage.disableVisibilityChange = true;
+            this.background = this.phaser.add.group();
+            this.hotspots = this.phaser.add.group();
+            this.sprites = this.phaser.add.group();
 
-        this.phaser.input.onDown.add((pointer) => {
-            const x = this.phaser.input.x + this.phaser.camera.x;
-            const y = this.phaser.input.y + this.phaser.camera.y;
-            const button = (pointer.button == Phaser.Mouse.RIGHT_BUTTON) ? "RIGHT" : "LEFT";
-            this.clickEvents.trigger({"x": x, "y": y, "button": button});
-        });
+            this.phaser.input.onDown.add((pointer) => {
+                const x = this.phaser.input.x + this.phaser.camera.x;
+                const y = this.phaser.input.y + this.phaser.camera.y;
+                const button = (pointer.button == Phaser.Mouse.RIGHT_BUTTON) ? "RIGHT" : "LEFT";
+                this.clickEvents.trigger({"x": x, "y": y, "button": button});
+            });
 
-        const rooms = this.game.getConfiguration().get("rooms");
-        Object.keys(rooms).forEach(roomId => {
-            this.game.debugMessage(`Loading room ${roomId}`);
-            const room = rooms[roomId];
-            this.phaser.load.image(roomId + '-background', '/static/' + room.background);
-            this.phaser.load.image(roomId + '-mask', '/static/' + room.mask);
-        });
+            const rooms = this.game.getConfiguration().get("rooms");
+            Object.keys(rooms).forEach(roomId => {
+                this.game.debugMessage(`Loading room ${roomId}`);
+                const room = rooms[roomId];
+                this.phaser.load.image(roomId + '-background', '/static/' + room.background);
+                this.phaser.load.image(roomId + '-mask', '/static/' + room.mask);
+            });
 
-        const characters = this.game.getConfiguration().get("characters");
-        Object.keys(characters).forEach(characterId => {
-            this.game.debugMessage(`Loading character ${characterId}`);
-            const character = characters[characterId];
-            this.phaser.load.spritesheet(characterId + '-sprite', '/static/' + character.sprite, character.width, character.height);
-        });
+            const characters = this.game.getConfiguration().get("characters");
+            Object.keys(characters).forEach(characterId => {
+                this.game.debugMessage(`Loading character ${characterId}`);
+                const character = characters[characterId];
+                this.phaser.load.spritesheet(characterId + '-sprite', '/static/' + character.sprite, character.width, character.height);
+            });
 
-        const sounds = this.game.getConfiguration().get("sounds");
-        Object.keys(sounds).forEach(soundId => {
-            this.phaser.load.audio(soundId, '/static/sounds/' + sounds[soundId]);
-        });
+            const sounds = this.game.getConfiguration().get("sounds");
+            Object.keys(sounds).forEach(soundId => {
+                this.phaser.load.audio(soundId, '/static/sounds/' + sounds[soundId]);
+            });
+
+            this.phaser.load.start();
+        })
     }
     
     _update() {
