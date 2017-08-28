@@ -14,7 +14,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "".join(
     random.choice(string.printable) for i in range(40)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = []
 

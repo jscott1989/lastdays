@@ -1,3 +1,4 @@
 #!/bin/sh
 source engine/ve/bin/activate
+export DJANGO_DEBUG="True"
 python engine/manage.py runserver

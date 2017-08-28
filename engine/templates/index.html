@@ -24,6 +24,9 @@
             </div>
         </div>
     </div>
+    <script>
+        var debug = {% if debug %}true{% else %}false{% endif %};
+    </script>
     <script type="text/javascript" src="{% static "bundle.js" %}"></script>
 </body>
 </html>
