@@ -7,3 +7,10 @@ interact:
     text: The door won't open
   - type: talk
     text: I think I need a ticket
+ticket:
+  - type: talk
+    text: Yay! You solved the first puzzle
+  - type: talk
+    text: That's as far as the game goes for now...
+  - type: talk
+    text: Come back again soon!

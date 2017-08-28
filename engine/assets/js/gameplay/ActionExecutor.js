@@ -15,24 +15,24 @@ export default class ActionExecutor {
     }
 
     executeActions(actions, player, context) {
+        // Player is either a single player or a tuple - with a player in the first position
+        // and a npc in the second
+
         var result = Promise.resolve();
         actions.forEach(action => {
-            // We assume that action.participant is used then multiple players have been passed
-            const actionPlayer = (action.participant) ? player[action.participant - 1] : player;
-
             result = result.then(() => {
-                return this.ACTIONS[action.type](action, actionPlayer, context)
+                return this.ACTIONS[action.type](action, player, context)
             });
         });
         return result;
     }
 
     _talk(action, player) {
-        return player.talk(action.text);
+        return ActionExecutor._getPlayer(action, player).talk(action.text);
     }
 
     _localTalk(action, player) {
-        return player.localTalk(action.text);
+        return ActionExecutor._getPlayer(action, player).localTalk(action.text);
     }
 
     _condition(action, player, context) {
@@ -48,20 +48,23 @@ export default class ActionExecutor {
     }
 
     _removeFromInventory(action, player) {
-        player.removeFromInventory(action.item)
+        ActionExecutor._getPlayer(action, player).removeFromInventory(action.item)
         return Promise.resolve();
     }
 
     _addToInventory(action, player) {
-        player.addToInventory(action.item)
+        ActionExecutor._getPlayer(action, player).addToInventory(action.item)
         return Promise.resolve();
     }
 
     _setVariable(action, player) {
+
+        const lPlayer = ActionExecutor._getPlayer(action, player)
+
         const value = eval(ActionExecutor.formatReadString(action.value));
         
         const localRegex = /@([\w\.]+)/g;
-        const localRegexReplacement = "player.set(\"$1\", " + value + ")";
+        const localRegexReplacement = "lPlayer.set(\"$1\", " + value + ")";
 
         const worldRegex = /\^([\w\.]+)/g;
         const worldRegexReplacement = "this.game.getWorldState().set(\"$1\", " + value + ")";
@@ -71,10 +74,11 @@ export default class ActionExecutor {
     }
 
     _beginDialogue(action, player, context) {
-        return player.beginDialogue(context, action.dialogue);
+        return ActionExecutor._getPlayer(action, player).beginDialogue(context, action.dialogue);
     }
 
     _playSound(action, player, context) {
+        // TODO: How does this relate to a player?
         if (action.wait) {
             return this.game.getPlayer().playSound(action.sound)
         } else {
@@ -84,13 +88,20 @@ export default class ActionExecutor {
     }
 }
 
+ActionExecutor._getPlayer = (action, player) => {
+    if (Array.isArray(player)) {
+        return (action.participant) ? player[action.participant - 1] : player[0];
+    }
+    return player;
+}
+
 ActionExecutor.formatReadString = (string) => {
     if (!(typeof string == "string")) {
         return string;
     }
 
     const localRegex = /@([\w\.]+)/g;
-    const localRegexReplacement = "player.get(\"$1\")";
+    const localRegexReplacement = "lPlayer.get(\"$1\")";
 
     const worldRegex = /\^([\w\.]+)/g;
     const worldRegexReplacement = "game.getWorldState().get(\"$1\")";
@@ -102,6 +113,8 @@ ActionExecutor.evaluateCondition = (condition, player, game) => {
     if (condition === "default") {
         return true;
     }
+
+    const lPlayer = ActionExecutor._getPlayer(condition, player)
 
     condition = ActionExecutor.formatReadString(condition);
 

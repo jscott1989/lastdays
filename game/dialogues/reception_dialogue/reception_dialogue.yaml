@@ -10,7 +10,7 @@ hello:
     -
       participant: 2
       type: talk
-      text: Hello
+      text: Hello sir
 ticket:
   hover: Cost
   image: inventoryitems/ticket/ticket.png
@@ -27,7 +27,7 @@ ticket:
     -
       participant: 2
       type: talk
-      text: It's €13
+      text: A ticket costs €13
 cost:
   hover: Cost
   image: inventoryitems/euro/euro.png
@@ -41,3 +41,46 @@ cost:
       participant: 2
       type: talk
       text: The price is the price, sir
+euro:
+  item: true
+  actions:
+    - type: condition
+      options:
+        - condition: "@inventory.euro >= 13"
+          actions:
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - type: removeFromInventory
+              item: euro
+            - participant: 2
+              type: talk
+              text: Here you go, sir
+            - type: addToInventory
+              item: ticket
+        - condition: default
+          actions:
+            - participant: 2
+              type: talk
+              text: That's not enough money, sir

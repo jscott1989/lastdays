@@ -13,31 +13,21 @@ export default class Dialogue {
         return Object.keys(this.script).filter(k => {
             if (k == "exit") return false;
 
-            console.log("Checking ", k)
-
             if (this.script[k].item) {
                 return false;
             }
-
-            console.log("A", this.script[k].condition, ActionExecutor.evaluateCondition(this.script[k].condition, this.player, this.game), this.player.data.state);
 
             if (this.script[k].condition && !ActionExecutor.evaluateCondition(this.script[k].condition, this.player, this.game)) {
                 return false;
             }
 
-            console.log("B");
-
             if (this.script[k].onceOnly && !(ActionExecutor.evaluateCondition(`!^state.dialogues.${this.dialogueId}.${k}`, this.player, this.game))) {
                 return false;
             }
 
-            console.log("C");
-
             if (this.script[k].onceOnlyLocal && !(ActionExecutor.evaluateCondition(`!@state.dialogues.${this.dialogueId}.${k}`, this.player, this.game))) {
                 return false;
             }
-
-            console.log("D");
 
             return true;
         }).map((option) => {
