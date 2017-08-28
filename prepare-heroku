@@ -1,6 +1,8 @@
 #!/bin/sh
 # Run this script to move around the folder structure to host on heroku.
 
+heroku apps:delete lastdaysofearth --confirm=lastdaysofearth
+
 mv engine/* .
 rm -R engine
 
@@ -31,7 +33,6 @@ heroku config:set SECRET_KEY=`openssl rand -base64 20`
 git push heroku master
 heroku ps:scale web=1:free worker=1:free
 
-heroku apps:delete lastdaysofearth --confirm=lastdaysofearth
 heroku rename lastdaysofearth
 
 git reset HEAD^
