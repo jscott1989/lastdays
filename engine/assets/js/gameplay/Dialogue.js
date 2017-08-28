@@ -11,7 +11,7 @@ export default class Dialogue {
 
     getOptions() {
         return Object.keys(this.script).filter(k => {
-            if (k == "exit") return false;
+            if (k == "exit" || k == "default") return false;
 
             if (this.script[k].item) {
                 return false;

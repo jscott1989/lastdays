@@ -14,6 +14,20 @@ hello:
       participant: 2
       type: talk
       text: The number one escape experience this side of Epsilon Eridani!
+default:
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: What do you think of this?
+    -
+      participant: 2
+      type: talk
+      text: I think that's a strange thing to bring
+    -
+      participant: 2
+      type: talk
+      text: To the number one escape experience this side of Epsilon Eridani!
 euro:
   item: true
   actions:

@@ -68,6 +68,16 @@ thirsty2:
       participant: 2
       type: talk
       text: and incredibly rich
+default:
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: What do you think of this?
+    -
+      participant: 2
+      type: talk
+      text: Huh... that's really something...
 euro:
   item: true
   actions:

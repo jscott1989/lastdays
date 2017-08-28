@@ -11,7 +11,7 @@ hello:
       participant: 2
       type: talk
       text: Hello sir
-ticket:
+buy_ticket:
   hover: Cost
   image: inventoryitems/ticket/ticket.png
   onceOnly: true
@@ -31,7 +31,7 @@ ticket:
 cost:
   hover: Cost
   image: inventoryitems/euro/euro.png
-  condition: "@state.dialogues.reception_dialogue.ticket"
+  condition: "@state.dialogues.reception_dialogue.buy_ticket"
   actions:
     -
       participant: 1
@@ -41,6 +41,16 @@ cost:
       participant: 2
       type: talk
       text: The price is the price, sir
+default:
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: What do you think of this?
+    -
+      participant: 2
+      type: talk
+      text: If you don't want to buy a ticket, please move along sir
 euro:
   item: true
   actions:

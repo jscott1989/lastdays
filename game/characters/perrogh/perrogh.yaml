@@ -55,3 +55,9 @@ lookAt:
 interact:
   - type: beginDialogue
     dialogue: thirsty_dialogue
+soda:
+  - type: talk
+    text: Maybe he'd like this. I should ask
+dietsoda:
+  - type: talk
+    text: Maybe he'd like this. I should ask

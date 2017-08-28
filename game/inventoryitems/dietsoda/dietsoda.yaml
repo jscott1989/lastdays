@@ -5,3 +5,6 @@ lookAt:
     text: It's still just an ordinary soda, full of sugar.
   - type: talk
     text: But now it has "Diet" written on the front.
+defaultInteraction:
+  - type: talk
+  - text: I don't want to waste it

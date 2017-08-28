@@ -34,7 +34,11 @@ export default class Player extends Character {
             if (dialogue && dialogue.npc == npc) {
                 this.game.getUiController().blockDialogueInterface();
             }
-            this.game.getActionExecutor().executeActions(this.game.getConfiguration().get("dialogues")[dialogueId][option].actions, [this, npc]).then(() => {
+
+            const dialogueOption = this.game.getConfiguration().get("dialogues")[dialogueId][option];
+            const actions = dialogueOption ? dialogueOption.actions : this.game.getConfiguration().get("dialogues")[dialogueId]["default"].actions;
+
+            this.game.getActionExecutor().executeActions(actions, [this, npc]).then(() => {
                 if (dialogue && dialogue.npc == npc) {
                     this.game.getUiController().showDialogue(dialogue);
                     this.game.getUiController().unblockDialogueInterface();
