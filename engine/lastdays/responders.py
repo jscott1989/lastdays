@@ -102,3 +102,11 @@ def setWorldVariable(player, subject, content):
 
     data[parts[-1]] = content["value"]
     world.save()
+
+
+def goToRoom(player, subject, content):
+    player.data["location"]["room"] = content["room"]
+    player.data["location"]["x"] = content["y"]
+    player.data["location"]["y"] = content["x"]
+    player.save()
+    player.refresh()

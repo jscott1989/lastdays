@@ -246,4 +246,8 @@ export default class Character {
     getColor() {
         return this._getConfig("color");
     }
+
+    goToRoom(room, x, y) {
+        // This doesn't work for anyone but the main player
+    }
 }

@@ -10,7 +10,8 @@ export default class ActionExecutor {
             "addToInventory": this._addToInventory.bind(this),
             "setVariable": this._setVariable.bind(this),
             "beginDialogue": this._beginDialogue.bind(this),
-            "playSound": this._playSound.bind(this)
+            "playSound": this._playSound.bind(this),
+            "goToRoom": this._goToRoom.bind(this)
         }
     }
 
@@ -25,6 +26,10 @@ export default class ActionExecutor {
             });
         });
         return result;
+    }
+
+    _goToRoom(action, player) {
+        return ActionExecutor._getPlayer(action, player).goToRoom(action.room, action.x, action.y);
     }
 
     _talk(action, player) {

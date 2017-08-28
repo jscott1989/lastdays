@@ -14,7 +14,8 @@ RESPONDERS = {
     "addToInventory": responders.addToInventory,
     "setDirection": responders.setDirection,
     "playSound": responders.playSound,
-    "pickDialogue": responders.pickDialogue
+    "pickDialogue": responders.pickDialogue,
+    "goToRoom": responders.goToRoom
 }
 
 
