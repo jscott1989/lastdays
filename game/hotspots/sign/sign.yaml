@@ -1,7 +1,7 @@
 name: Sign
 lookAt:
   - type: talk
-    text: It's just a sign. I can't read it.
+    text: It's just a sign. I can't read it
 interact:
   - type: talk
-    text: I can't reach it.
+    text: I can't reach it

@@ -1,4 +1,5 @@
 hello:
+  hover: Hello
   image: dialogues/welcome_dialogue/hello.png
   onceOnly: true
   actions:
@@ -15,6 +16,7 @@ hello:
       type: talk
       text: I'm Perrogh Zekmumt
 perrogh:
+  hover: Perrogh
   image: dialogues/thirsty_dialogue/perrogh.png
   condition: "@state.dialogues.thirsty_dialogue.hello > 0"
   onceOnly: true
@@ -32,6 +34,7 @@ perrogh:
       type: talk
       text: "No"
 thirsty:
+  hover: Perrogh
   image: dialogues/thirsty_dialogue/perrogh.png
   condition: "@state.dialogues.thirsty_dialogue.perrogh > 0"
   onceOnly: true

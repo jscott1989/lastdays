@@ -1,4 +1,5 @@
 hello:
+  hover: Hello
   image: dialogues/welcome_dialogue/hello.png
   onceOnly: true
   actions:
@@ -10,9 +11,9 @@ hello:
       participant: 2
       type: talk
       text: Hello
-money:
+ticket:
   hover: Cost
-  image: inventoryitems/euro/euro.png
+  image: inventoryitems/ticket/ticket.png
   onceOnly: true
   actions:
     -
@@ -27,10 +28,10 @@ money:
       participant: 2
       type: talk
       text: It's €13
-money2:
+cost:
   hover: Cost
   image: inventoryitems/euro/euro.png
-  condition: "@state.dialogues.reception_dialogue.money"
+  condition: "@state.dialogues.reception_dialogue.ticket"
   actions:
     -
       participant: 1

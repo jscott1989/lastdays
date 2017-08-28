@@ -1,0 +1,5 @@
+name: Ticket
+image: inventoryitems/ticket/ticket.png
+lookAt:
+  - type: talk
+    text: It's a ticket for the "last days of earth" escape game

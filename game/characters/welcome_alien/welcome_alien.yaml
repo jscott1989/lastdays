@@ -1,4 +1,4 @@
-name: Welcoming Alien
+name: Greeter
 color: "#FF0000"
 sprite: characters/alien/alien.png
 width: 256

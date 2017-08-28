@@ -49,6 +49,22 @@ default_state:
         x: 128
         y: 333
         direction: left
+      lookAt:
+        - type: talk
+          text: "\"Kepler 22b or not 22b?\""
+        - type: talk
+          text: "\"Currently closed for lighting repairs\""
+    - id: door1
+      type: closed_game_door
+      location:
+        x: 47
+        y: 220
+        width: 84
+        height: 113
+      interactLocation:
+        x: 114
+        y: 339
+        direction: left
     - id: sign2
       type: sign
       location:
@@ -60,6 +76,22 @@ default_state:
         x: 613
         y: 266
         direction: up
+      lookAt:
+        - type: talk
+          text: "\"Tau Ceti e I hardly knew ye\""
+        - type: talk
+          text: "\"Currently closed due to metal deficiency\""
+    - id: door2
+      type: closed_game_door
+      location:
+        x: 589
+        y: 174
+        width: 54
+        height: 74
+      interactLocation:
+        x: 613
+        y: 267
+        direction: up
     - id: sign3
       type: sign
       location:
@@ -70,6 +102,22 @@ default_state:
       interactLocation:
         x: 852
         y: 288
+        direction: right
+      lookAt:
+        - type: talk
+          text: "\"Last days of Earth\""
+        - type: talk
+          text: "\"The number one escape experience this side of Epsilon Eridani\""
+    - id: door3
+      type: game_door
+      location:
+        x: 840
+        y: 171
+        width: 61
+        height: 103
+      interactLocation:
+        x: 842
+        y: 285
         direction: right
     - id: vending_machine
       type: vending_machine

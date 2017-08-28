@@ -34,21 +34,27 @@ export default class Hotspot {
         return this.data.id;
     }
 
+    _getConfig(key) {
+        if (this.data[key]) {
+            return this.data[key];
+        }
+        return this.game.getConfiguration().get("hotspots")[this.data.type][key];
+    }
+
     getName() {
-        return this.game.getConfiguration().get("hotspots")[this.data.type].name;
+        return this._getConfig("name");
     }
 
     getLookAt() {
-        return this.game.getConfiguration().get("hotspots")[this.data.type].lookAt;
+        return this._getConfig("lookAt");
     }
 
     getInteract(key) {
         key = key || "interact";
-        return this.game.getConfiguration().get("hotspots")[this.data.type][key];
+        return this._getConfig(key);
     }
 
     getInteractLocation() {
-        console.log(this.data);
-        return this.data.interactLocation;
+        return this._getConfig("interactLocation");
     }
 }

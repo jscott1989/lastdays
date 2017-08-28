@@ -1,0 +1,7 @@
+name: Door
+lookAt:
+  - type: talk
+    text: The door looks locked tight
+interact:
+  - type: talk
+    text: The door won't open

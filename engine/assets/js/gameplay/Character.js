@@ -1,6 +1,9 @@
 const SMOOTHING_AMOUNT = 500;
 import Datastore from "./data/Datastore.js";
 
+const MINIMUM_TEXT_TIMEOUT = 1000;
+const MAXIMUM_TEXT_TIMEOUT = 5000;
+
 export default class Character {
     constructor(game, data) {
         this.game = game;
@@ -198,22 +201,29 @@ export default class Character {
                 });
 
             this.talkText.anchor.setTo(0, 1);
-            this.talkTextTimeout = text.length * 150;
+            this.talkTextTimeout = Math.max(MINIMUM_TEXT_TIMEOUT, Math.min(MAXIMUM_TEXT_TIMEOUT, text.length * 100));
             this.talkTextCallback = resolve;
         });
     }
 
+    _getConfig(key) {
+        if (this.data[key]) {
+            return this.data[key];
+        }
+        return this.game.getConfiguration().get("characters")[this.data.character][key];
+    }
+
     getName() {
-        return this.game.getConfiguration().get("characters")[this.data.character].name;
+        return this._getConfig("name");
     }
 
     getLookAt() {
-        return this.game.getConfiguration().get("characters")[this.data.character].lookAt;
+        return this._getConfig("lookAt");
     }
 
     getInteract(key) {
         key = key || "interact";
-        return this.game.getConfiguration().get("characters")[this.data.character][key];
+        return this._getConfig(key);
     }
 
     getInteractLocation() {
@@ -221,6 +231,6 @@ export default class Character {
     }
 
     getColor() {
-        return this.data.color;
+        return this._getConfig("color");
     }
 }
