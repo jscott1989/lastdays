@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
 
+#loading {
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    top: 50%;
+    margin-top: -10px;
+    text-align: center;
+}
+
+
 body {
     margin: 0;
     padding: 0;
@@ -16,6 +26,7 @@ body {
 }
 
 #game-container {
+    display: none;
     width: 1000px;
     height: 600px;
     background: #000;
