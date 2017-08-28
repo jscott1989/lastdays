@@ -48,4 +48,17 @@ export default class Player extends Character {
     playSound(sound) {
         return this.game.getRenderer().playSound(sound);
     }
+
+    getInteractLocation() {
+        // TODO: This isn't really working very well
+        if (this.direction == "up") {
+            return {x: this.data.location.x - 10, y: this.data.location.y - 30, direction: "down"};
+        } else if (this.direction == "down") {
+            return {x: this.data.location.x + 10, y: this.data.location.y + 30, direction: "up"};
+        } else if (this.direction == "left") {
+            return {x: this.data.location.x - 30, y: this.data.location.y + 10, direction: "right"};
+        } else {
+            return {x: this.data.location.x + 30, y: this.data.location.y - 10, direction: "left"};
+        }
+    }
 }

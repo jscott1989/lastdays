@@ -50,8 +50,16 @@ export default class Character {
 
     setDirection(direction) {
         this.direction = direction;
+
+        if (this.direction == "left" && this.sprite.scale.x > 0) {
+            this.sprite.scale.x = 0 - this.sprite.scale.x;
+        } else if (this.direction != "left" && this.sprite.scale.x < 0) {
+            this.sprite.scale.x = 0 - this.sprite.scale.x;
+        }
+
         const defaultAnimation = this.data.animation || "idle";
-        this.sprite.animations.play(defaultAnimation + '-' + this.direction)
+        direction = (this.direction == "left" || this.direction == "right") ? "side" : this.direction;
+        this.sprite.animations.play('idle-' + direction);
     }
 
     destroy() {
@@ -223,7 +231,12 @@ export default class Character {
 
     getInteract(key) {
         key = key || "interact";
-        return this._getConfig(key);
+        const actions = this._getConfig(key);
+        return actions;
+    }
+
+    getUnknownInteract() {
+        return this._getConfig("unknownInteract");
     }
 
     getInteractLocation() {

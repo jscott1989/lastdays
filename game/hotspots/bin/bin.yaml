@@ -1,0 +1,11 @@
+name: Bin
+lookAt:
+  - type: talk
+    text: It's a bin
+interact:
+  - type: talk
+    text: I'm not rummaging through a bin, who do you think I am?
+  - type: talk
+    text: ...
+  - type: talk
+    text: There's nothing useful

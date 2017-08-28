@@ -75,4 +75,27 @@ export default class LocalPlayer extends Player {
             return super.pickDialogue(dialogueId, option, npc);
         });
     }
+
+    getInteractLocation() {
+        return {x: this.data.location.x, y: this.data.location.y};
+    }
+
+    getLookAt() {
+        return [{
+            "type": "talk",
+            "text": "Hey good lookin'"
+        }];
+    }
+
+    getInteract(key) {
+        // TODO: we need a special case for self interaction...
+        return [{
+            "type": "talk",
+            "text": "I don't want to do that to myself"
+        }];
+    }
+
+    getName() {
+        return "Me";
+    }
 }

@@ -1,0 +1,9 @@
+name: Couch
+lookAt:
+  - type: talk
+    text: The couch looks old
+  - type: talk
+    text: I imagine all sorts of things down the side of it
+interact:
+  - type: talk
+    text: Huh... nothing down the side of it. Who would've thought?

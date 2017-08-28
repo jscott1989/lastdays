@@ -52,3 +52,7 @@ animations:
 lookAt:
   - type: talk
     text: Wow. Alien's are WEIRD!
+unknownInteract:
+  - type: talk
+    player: 1
+    text: They seem busy. I don't think I should disturb them.

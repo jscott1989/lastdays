@@ -116,7 +116,17 @@ export default class Game {
 
             this.player.move(x, y, direction).then(() => {
                 const interactKey = selectedItem || "interact";
-                this.actionExecutor.executeActions(hoveredObject.hoverable.getInteract(interactKey), this.player, hoveredObject.hoverable);
+                let actions = hoveredObject.hoverable.getInteract(interactKey);
+                if (!actions) {
+                    if (interactKey != "interact") {
+                        actions = this.configuration.get("inventoryitems")[interactKey]["defaultInteract"];
+                    }
+                        
+                    if (!actions) {
+                        actions = hoveredObject.hoverable.getUnknownInteract();
+                    }
+                }
+                this.actionExecutor.executeActions(actions, this.player, hoveredObject.hoverable);
             });
 
             this.selectItem(null);

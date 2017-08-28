@@ -67,6 +67,13 @@ export default class Renderer {
         if (this.sprites != null) {
             this.sprites.sort("y");
         }
+
+        if (this.hoveredObjectText != null) {
+            const hoverable = this.game.getHoveredObject().hoverable;
+            const bounds = this.getSpriteBounds(hoverable.getSprite());
+            this.hoveredObjectText.x = bounds.x + hoverable.getSprite().width / 2 - this.hoveredObjectText.width / 2;
+            this.hoveredObjectText.y = bounds.y + hoverable.getSprite().height + 10
+        }
     }
 
     updateCursor() {

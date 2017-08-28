@@ -2,6 +2,9 @@ name: Euro
 image: inventoryitems/euro/euro.png
 lookAt:
   - type: talk
-    text: It's a Euro. The most stable currency in the galaxy.
+    text: It's a Euro. The most stable currency in the galaxy
   - type: talk
-    text: If I get enough of them, I can enter the escape room.
+    text: If I get enough of them, I can enter the escape room
+defaultInteract:
+  - type: talk
+    text: I don't see the benefit in throwing money at it

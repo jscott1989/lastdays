@@ -1,0 +1,7 @@
+name: Poster
+lookAt:
+  - type: talk
+    text: It's a poster for one of the up-coming escape rooms
+interact:
+  - type: talk
+    text: I can't reach it

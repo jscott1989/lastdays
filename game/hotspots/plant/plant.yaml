@@ -1,0 +1,9 @@
+name: Plant
+lookAt:
+  - type: talk
+    text: It looks like a baby Lash Weed
+  - type: talk
+    text: Once it's big enough it'll be quite a handful!
+interact:
+  - type: talk
+    text: I can't lift it

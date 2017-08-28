@@ -54,6 +54,10 @@ export default class Hotspot {
         return this._getConfig(key);
     }
 
+    getUnknownInteract() {
+        return this._getConfig("unknownInteract")
+    }
+
     getInteractLocation() {
         return this._getConfig("interactLocation");
     }
