@@ -5,6 +5,7 @@ heroku apps:delete lastdaysofearth --confirm=lastdaysofearth
 
 git clean -f -d
 
+rm -R engine/ve
 mv engine/* .
 rm -R engine
 
