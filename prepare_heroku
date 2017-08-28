@@ -1,0 +1,32 @@
+#!/bin/sh
+# Run this script to move around the folder structure to host on heroku.
+
+# mv engine/* .
+# rm -R engine
+
+echo "python-3.5.2" > runtime.txt
+echo "web: daphne lastdays.asgi:channel_layer --port \$PORT --bind 0.0.0.0 -v2" > Procfile
+echo "worker: python manage.py runworker -v2" >> Procfile
+
+mkdir bin
+
+echo 'export PATH=/app/.heroku/node/bin:$PATH' > bin/post_compile
+echo 'yarn install --production=false' >> bin/post_compile
+echo 'webpack' >> bin/post_compile
+echo './manage.py migrate' >> bin/post_compile
+echo './manage.py reset' >> bin/post_compile
+
+chmod +x bin/post_compile
+
+git commit -am "prepare heroku"
+heroku create
+heroku buildpacks:set heroku/python
+heroku buildpacks:add --index 1 heroku/nodejs
+heroku config:set DISABLE_COLLECTSTATIC=1
+heroku config:set GAME_DIRECTORY=/app/game
+heroku addons:add heroku-redis
+heroku addons:add heroku-postgresql
+heroku config:set SECRET_KEY=`openssl rand -base64 20`
+git push heroku master
+heroku ps:scale web=1:free worker=1:free
+heroku open
