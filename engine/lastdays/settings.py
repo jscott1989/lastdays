@@ -116,10 +116,13 @@ ALLOWED_HOSTS = ['*']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
+GAME_DIRECTORY = os.environ.get("GAME_DIRECTORY",
+                                os.path.join(BASE_DIR, "../game"))
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "node_modules"),
-    os.path.join(BASE_DIR, "../game")
+    GAME_DIRECTORY
 ]
 
 CHANNEL_LAYERS = {
