@@ -106,7 +106,9 @@ def setWorldVariable(player, subject, content):
 
 def goToRoom(player, subject, content):
     player.data["location"]["room"] = content["room"]
-    player.data["location"]["x"] = content["y"]
-    player.data["location"]["y"] = content["x"]
+    player.data["location"]["x"] = content["x"]
+    player.data["location"]["y"] = content["y"]
+    if content.get("direction"):
+        player.data["location"]["direction"] = content["direction"]
     player.save()
     player.refresh()

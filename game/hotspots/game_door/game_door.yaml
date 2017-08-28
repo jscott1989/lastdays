@@ -5,8 +5,9 @@ lookAt:
 interact:
   - type: goToRoom
     room: waiting_area
-    x: 100
-    y: 100
+    x: 2
+    y: 534
+    direction: right
   # - type: talk
   #   text: The door won't open
   # - type: talk

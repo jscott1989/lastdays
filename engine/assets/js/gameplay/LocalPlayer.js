@@ -99,7 +99,7 @@ export default class LocalPlayer extends Player {
         return "Me";
     }
 
-    goToRoom(room, x, y) {
-        this.game.getConnection().send("goToRoom", {"room": room, "x": x, "y": y})
+    goToRoom(room, x, y, direction) {
+        this.game.getConnection().send("goToRoom", {"room": room, "x": x, "y": y, "direction": direction})
     }
 }

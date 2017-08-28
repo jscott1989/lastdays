@@ -29,7 +29,7 @@ export default class ActionExecutor {
     }
 
     _goToRoom(action, player) {
-        return ActionExecutor._getPlayer(action, player).goToRoom(action.room, action.x, action.y);
+        return ActionExecutor._getPlayer(action, player).goToRoom(action.room, action.x, action.y, action.direction);
     }
 
     _talk(action, player) {

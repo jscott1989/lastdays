@@ -231,11 +231,16 @@ export default class Room {
      */
     scale(sprite) {
         const scaling = game.getConfiguration().get("rooms")[this.name].scaling;
-        const yPos = Math.max(Math.min(sprite.y, scaling.maxY), scaling.minY);
-        const scaleValue = ((yPos - scaling.minY) / (scaling.maxY - scaling.minY)) * (scaling.maxScale - scaling.minScale) + scaling.minScale;
+        if (scaling) {
+            const yPos = Math.max(Math.min(sprite.y, scaling.maxY), scaling.minY);
+            const scaleValue = ((yPos - scaling.minY) / (scaling.maxY - scaling.minY)) * (scaling.maxScale - scaling.minScale) + scaling.minScale;
 
-        sprite.scale.x = (sprite.scale.x > 0) ? scaleValue : -scaleValue;
-        sprite.scale.y = scaleValue;
+            sprite.scale.x = (sprite.scale.x > 0) ? scaleValue : -scaleValue;
+            sprite.scale.y = scaleValue;
+        } else {
+            sprite.scale.x = (sprite.scale.x > 0) ? 1 : -1;
+            sprite.scale.y = 1;
+        }
     }
 
     getNearestWalkablePoint(x, y, currentX, currentY) {
