@@ -3,6 +3,8 @@
 
 heroku apps:delete lastdaysofearth --confirm=lastdaysofearth
 
+git clean -f -d
+
 mv engine/* .
 rm -R engine
 
@@ -40,3 +42,4 @@ git reset --hard
 git clean -f -d
 
 heroku open
+./setup
