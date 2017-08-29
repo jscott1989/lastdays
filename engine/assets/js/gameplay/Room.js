@@ -66,7 +66,7 @@ export default class Room {
         this.background.destroy();
         this.players.forEach(player => player.destroy());
         this.npcs.forEach(npc => npc.destroy());
-        this.npcs.forEach(hotspot => hotspot.destroy());
+        this.hotspots.forEach(hotspot => hotspot.destroy());
 
         this.game.getConnection().messagesObservable.unsubscribe("addPlayer", this._addPlayer);
         this.game.getConnection().messagesObservable.unsubscribe("removePlayer", this._removePlayer);

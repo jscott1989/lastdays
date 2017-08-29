@@ -1,2 +1,56 @@
 background: rooms/ovaloffice/ovaloffice.png
-mask: rooms/ovaloffice/ovaloffice.png
+mask: rooms/ovaloffice/ovaloffice-mask.png
+scaling:
+  minY: 400
+  maxY: 500
+  maxScale: 0.6
+  minScale: 0.5
+default_state:
+  npcs:
+    - id: trump
+      character: trump
+      location:
+        x: 889
+        y: 420
+        direction: down
+      interactLocation:
+        x: 763
+        y: 433
+        direction: right
+  hotspots:
+    - id: door_to_rocket
+      name: Rocket
+      type: door
+      interact:
+        - type: goToRoom
+          room: rocket
+          x: 767
+          y: 537
+          direction: left
+      location:
+        x: 212
+        y: 260
+        width: 139
+        height: 300
+      interactLocation:
+        x: 274
+        y: 578
+        direction: up
+    - id: door_to_factory
+      name: Farm
+      type: door
+      interact:
+        - type: goToRoom
+          room: farm
+          x: 107
+          y: 480
+          direction: down
+      location:
+        x: 1427
+        y: 189
+        width: 227
+        height: 370
+      interactLocation:
+        x: 1497
+        y: 568
+        direction: up

@@ -85,6 +85,8 @@ export default class Game {
         this.worldState.setData(refreshContent.world);
         this.loadPlayer(refreshContent.player);
         this.loadRoom(refreshContent.room);
+        this.setHoveredObject(null);
+        this.selectItem(null);
     }
 
     _setWorldVariable(content) {

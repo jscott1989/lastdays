@@ -64,6 +64,9 @@ export default class Character {
 
     destroy() {
         this.sprite.destroy();
+        if (this.talkText != null) {
+            this.talkText.destroy();
+        }
     }
 
     getSprite() {

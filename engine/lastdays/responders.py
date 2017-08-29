@@ -1,10 +1,10 @@
 
-def ping(player, subject, content):
+def ping(player, channel, subject, content):
     player.touch()
     player.save()
 
 
-def move(player, subject, content):
+def move(player, channel, subject, content):
     player.data["location"]["x"] = content["x"]
     player.data["location"]["y"] = content["y"]
     player.save()
@@ -21,7 +21,7 @@ def move(player, subject, content):
     player.send_to_room("move", move_command)
 
 
-def setDirection(player, subject, content):
+def setDirection(player, channel, subject, content):
     player.data["location"]["direction"] = content["direction"]
     player.save()
 
@@ -31,21 +31,21 @@ def setDirection(player, subject, content):
     })
 
 
-def talk(player, subject, content):
+def talk(player, channel, subject, content):
     player.send_to_room("talk", {
         "player": player.id,
         "text": content["text"],
     })
 
 
-def playSound(player, subject, content):
+def playSound(player, channel, subject, content):
     player.send_to_room("playSound", {
         "player": player.id,
         "sound": content["sound"],
     })
 
 
-def pickDialogue(player, subject, content):
+def pickDialogue(player, channel, subject, content):
     player.send_to_room("pickDialogue", {
         "player": player.id,
         "dialogueId": content["dialogueId"],
@@ -54,21 +54,21 @@ def pickDialogue(player, subject, content):
     })
 
 
-def removeFromInventory(player, subject, content):
+def removeFromInventory(player, channel, subject, content):
     player.data["inventory"][content["item"]] -= 1
     if player.data["inventory"][content["item"]] <= 0:
         del player.data["inventory"][content["item"]]
     player.save()
 
 
-def addToInventory(player, subject, content):
+def addToInventory(player, channel, subject, content):
     if content["item"] not in player.data["inventory"]:
         player.data["inventory"][content["item"]] = 0
     player.data["inventory"][content["item"]] += 1
     player.save()
 
 
-def setPlayerVariable(player, subject, content):
+def setPlayerVariable(player, channel, subject, content):
     parts = content["key"].split(".")
 
     data = player.data
@@ -82,7 +82,7 @@ def setPlayerVariable(player, subject, content):
     player.save()
 
 
-def setWorldVariable(player, subject, content):
+def setWorldVariable(player, channel, subject, content):
     from lastdays.utils import send_to_all
     send_to_all("setWorldVariable", {
         "key": content["key"],
@@ -104,11 +104,17 @@ def setWorldVariable(player, subject, content):
     world.save()
 
 
-def goToRoom(player, subject, content):
+def goToRoom(player, channel, subject, content):
+    player.send_to_room("removePlayer", {
+        "player": player.id
+    })
     player.data["location"]["room"] = content["room"]
     player.data["location"]["x"] = content["x"]
     player.data["location"]["y"] = content["y"]
     if content.get("direction"):
         player.data["location"]["direction"] = content["direction"]
     player.save()
-    player.refresh()
+    player.refresh(channel)
+    player.send_to_room("addPlayer", {
+        "player": player.player_data()
+    })

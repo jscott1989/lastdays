@@ -40,6 +40,6 @@ def ws_message(message):
         subject = command.get("subject")
         content = command.get("content")
         if subject in RESPONDERS:
-            RESPONDERS[subject](player, subject, content)
+            RESPONDERS[subject](player, message.reply_channel, subject, content)
         else:
             print("Unknown subject: %s" % subject)

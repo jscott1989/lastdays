@@ -1,0 +1,4 @@
+name: Door
+lookAt:
+  - type: talk
+    text: It's a door

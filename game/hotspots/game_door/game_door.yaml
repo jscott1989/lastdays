@@ -1,21 +1,20 @@
-name: Door
+name: '"Earth" Door'
 lookAt:
   - type: talk
-    text: The door looks locked tight
+    text: In the centre of the door is a slot for a ticket
 interact:
   - type: goToRoom
     room: waiting_area
-    x: 2
-    y: 534
+    x: 168
+    y: 415
     direction: right
   # - type: talk
   #   text: The door won't open
   # - type: talk
   #   text: I think I need a ticket
 ticket:
-  - type: talk
-    text: Yay! You solved the first puzzle
-  - type: talk
-    text: That's as far as the game goes for now...
-  - type: talk
-    text: Come back again soon!
+  - type: goToRoom
+    room: waiting_area
+    x: 168
+    y: 415
+    direction: right
