@@ -118,3 +118,17 @@ def goToRoom(player, channel, subject, content):
     player.send_to_room("addPlayer", {
         "player": player.player_data()
     })
+
+def pickUpItem(player, channel, subject, content):
+    room = player.get_room()
+    item = room.state["items"][content.item]
+    del room.state["items"][content.item]
+    room.save()
+
+    # TODO: get configuration to figure out which item to pick up - add it
+    # to the player's inventory - then send theh message to the room
+
+    # if content["item"] not in player.data["inventory"]:
+    #     player.data["inventory"][content["item"]] = 0
+    # player.data["inventory"][content["item"]] += 1
+    # player.save()

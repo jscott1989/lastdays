@@ -17,6 +17,12 @@ default_state:
         x: 763
         y: 433
         direction: right
+  items:
+    - id: crowbar
+      type: crowbar
+      location:
+        x: 453
+        y: 569
   hotspots:
     - id: door_to_rocket
       name: Rocket

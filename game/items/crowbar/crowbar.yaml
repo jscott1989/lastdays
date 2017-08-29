@@ -1,0 +1,3 @@
+name: Crowbar
+image: items/crowbar/crowbar.png
+canBePickedUp: True

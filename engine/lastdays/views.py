@@ -12,11 +12,17 @@ def index(request):
 def configuration(request):
     configuration = {}
 
-    for t in ["rooms", "characters", "hotspots", "inventoryitems"]:
+    for t in ["rooms", "characters", "hotspots", "inventoryitems", "items"]:
         configuration[t] = {}
         for r in os.listdir(os.path.join(settings.GAME_DIRECTORY, t)):
             with open(os.path.join(settings.GAME_DIRECTORY, "%s/%s/%s.yaml" % (t, r, r))) as o:
                 configuration[t][r] = yaml.load(o.read())
+
+    configuration["images"] = set()
+    for room in configuration["rooms"].values():
+        for image in room.get("default_state", {}).get("images", []):
+            configuration["images"].add(image["image"])
+    configuration["images"] = list(configuration["images"])
 
     configuration["dialogues"] = {}
     for r in os.listdir("game/dialogues"):

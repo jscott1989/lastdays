@@ -16,6 +16,11 @@ export default class LocalPlayer extends Player {
         return super.talk(text);
     }
 
+    pickUpItem(itemId) {
+        this.game.getConnection().send("pickUpItem", {"item": itemId});
+        return super.pickUpItem(itemId);
+    }
+
     removeFromInventory(item) {
         this.game.getConnection().send("removeFromInventory", {"item": item})
         super.removeFromInventory(item);

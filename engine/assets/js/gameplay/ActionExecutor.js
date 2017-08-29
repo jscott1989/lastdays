@@ -11,7 +11,8 @@ export default class ActionExecutor {
             "setVariable": this._setVariable.bind(this),
             "beginDialogue": this._beginDialogue.bind(this),
             "playSound": this._playSound.bind(this),
-            "goToRoom": this._goToRoom.bind(this)
+            "goToRoom": this._goToRoom.bind(this),
+            "pickUpItem": this._pickUpItem.bind(this)
         }
     }
 
@@ -59,6 +60,11 @@ export default class ActionExecutor {
 
     _addToInventory(action, player) {
         ActionExecutor._getPlayer(action, player).addToInventory(action.item)
+        return Promise.resolve();
+    }
+
+    _pickUpItem(action, player) {
+        ActionExecutor._getPlayer(action, player).pickUpItem(action.item)
         return Promise.resolve();
     }
 

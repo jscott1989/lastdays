@@ -1,4 +1,6 @@
 import Hotspot from "./Hotspot.js";
+import Item from "./Item.js";
+import Image from "./Image.js";
 import Player from "./Player.js";
 import NPC from "./NPC.js";
 import EasyStar from "easystarjs";
@@ -47,6 +49,8 @@ export default class Room {
         this.players = new Map();
         this.npcs = new Map();
         this.hotspots = new Map();
+        this.items = new Map();
+        this.images = new Map();
         // End sprites
 
         // We bind the callbacks for subscriptions
@@ -57,6 +61,7 @@ export default class Room {
         this._talk = this._talk.bind(this);
         this._playSound = this._playSound.bind(this);
         this._pickDialogue = this._pickDialogue.bind(this);
+        this._pickUpItem = this._pickUpItem.bind(this);
         // End binding
     }
 
@@ -67,6 +72,8 @@ export default class Room {
         this.players.forEach(player => player.destroy());
         this.npcs.forEach(npc => npc.destroy());
         this.hotspots.forEach(hotspot => hotspot.destroy());
+        this.items.forEach(item => item.destroy());
+        this.images.forEach(image => image.destroy());
 
         this.game.getConnection().messagesObservable.unsubscribe("addPlayer", this._addPlayer);
         this.game.getConnection().messagesObservable.unsubscribe("removePlayer", this._removePlayer);
@@ -75,6 +82,7 @@ export default class Room {
         this.game.getConnection().messagesObservable.unsubscribe("setDirection", this._setDirection);
         this.game.getConnection().messagesObservable.unsubscribe("playSound", this._playSound);
         this.game.getConnection().messagesObservable.unsubscribe("pickDialogue", this._pickDialogue);
+        this.game.getConnection().messagesObservable.unsubscribe("pickUpItem", this._pickUpItem);
     }
 
     load(data) {
@@ -134,6 +142,16 @@ export default class Room {
             this.hotspots.set(hotspot.id, new Hotspot(this.game, hotspot));
         });
 
+        const items = data.items || [];
+        items.forEach(item => {
+            this.items.set(item.id, new Item(this.game, item));
+        });
+
+        const images = data.images || [];
+        images.forEach(image => {
+            this.images.set(image.id, new Image(this.game, image));
+        });
+
         this.game.getConnection().messagesObservable.subscribe("addPlayer", this._addPlayer);
         this.game.getConnection().messagesObservable.subscribe("removePlayer", this._removePlayer);
         this.game.getConnection().messagesObservable.subscribe("move", this._move);
@@ -141,6 +159,7 @@ export default class Room {
         this.game.getConnection().messagesObservable.subscribe("setDirection", this._setDirection);
         this.game.getConnection().messagesObservable.subscribe("playSound", this._playSound);
         this.game.getConnection().messagesObservable.subscribe("pickDialogue", this._pickDialogue);
+        this.game.getConnection().messagesObservable.subscribe("pickUpItem", this._pickUpItem);
     }
 
     _addPlayer(subject, content) {
@@ -168,6 +187,15 @@ export default class Room {
         }
 
         this.players.get(content.player).move(content.x, content.y, content.direction);
+    }
+
+    _pickUpItem(subject, content) {
+        if (content.player == this.game.getPlayer().getId()) {
+            // We initiated the pick up - don't repeat it
+            return;
+        }
+
+        this.players.get(content.player).pickUpItem(content.item);
     }
 
     _setDirection(subject, content) {
@@ -262,5 +290,10 @@ export default class Room {
         }
 
         return null;
+    }
+
+    removeItem(itemId) {
+        this.items[itemId].destroy();
+        delete this.items[itemId];
     }
 }

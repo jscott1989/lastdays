@@ -53,6 +53,15 @@ export default class Player extends Character {
         return this.game.getRenderer().playSound(sound);
     }
 
+    pickUpItem(itemId) {
+        this.game.getRoom().removeItem(itemId);
+
+        if (this.data.inventory[item] == null) {
+            this.data.inventory[item] = 0;
+        }
+        this.data.inventory[item] += 1;
+    }
+
     getInteractLocation() {
         // TODO: This isn't really working very well
         if (this.direction == "up") {

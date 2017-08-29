@@ -58,6 +58,19 @@ export default class Renderer {
                 this.phaser.load.spritesheet(characterId + '-sprite', '/static/' + character.sprite, character.width, character.height);
             });
 
+            const items = this.game.getConfiguration().get("items");
+            Object.keys(items).forEach(itemId => {
+                this.game.debugMessage(`Loading item ${itemId}`);
+                const item = items[itemId];
+                this.phaser.load.image('item-' + itemId, '/static/' + item.image);
+            });
+
+            const images = this.game.getConfiguration().get("images");
+            images.forEach(imageId => {
+                this.game.debugMessage(`Loading image ${imageId}`);
+                this.phaser.load.image(imageId, '/static/' + imageId);
+            });
+
             const sounds = this.game.getConfiguration().get("sounds");
             Object.keys(sounds).forEach(soundId => {
                 this.phaser.load.audio(soundId, '/static/sounds/' + sounds[soundId]);
@@ -135,6 +148,30 @@ export default class Renderer {
         return sprite;
     }
 
+    addImage(image, x, y) {
+        const img = this.phaser.cache.getImage(image.image);
+        const ITEM_WIDTH = img.width;
+        const ITEM_HEIGHT = img.height;
+        const sprite = this.phaser.add.tileSprite(image.location.x, image.location.y, ITEM_WIDTH, ITEM_HEIGHT, image.image);
+        sprite.anchor.setTo(.5,1);
+
+        this.sprites.add(sprite);
+
+        return sprite;
+    }
+
+    addItemSprite(item, x, y) {
+        const img = this.phaser.cache.getImage('item-' + item.type);
+        const ITEM_WIDTH = img.width;
+        const ITEM_HEIGHT = img.height;
+        const itemSprite = this.phaser.add.tileSprite(item.location.x, item.location.y, ITEM_WIDTH, ITEM_HEIGHT, 'item-' + item.type);
+        itemSprite.anchor.setTo(.5,1);
+
+        this.sprites.add(itemSprite);
+
+        return itemSprite;
+    }
+
     addCharacterSprite(character, x, y) {
         const sprite = this.phaser.add.sprite(x, y, character + '-sprite', null, this.sprites);
         sprite.anchor.setTo(.5,1);
@@ -146,17 +183,20 @@ export default class Renderer {
         })
         sprite.animations.play('idle-side');
 
+
+        this.sprites.add(sprite);
+
         return sprite;
     }
 
     addHotspotSprite(x, y, width, height) {
         const bmd = this.phaser.add.bitmapData(width, height);
-        // if (this.game.debugMode) {
-        //     bmd.ctx.beginPath();
-        //     bmd.ctx.rect(0,0,width,height);
-        //     bmd.ctx.fillStyle = 'rgba(255,0,0,0.5)';
-        //     bmd.ctx.fill();
-        // }
+        if (this.game.debugMode) {
+            // bmd.ctx.beginPath();
+            // bmd.ctx.rect(0,0,width,height);
+            // bmd.ctx.fillStyle = 'rgba(255,0,0,0.5)';
+            // bmd.ctx.fill();
+        }
 
         const hotspotSprite = this.phaser.add.sprite(x, y, bmd);
         this.hotspots.add(hotspotSprite);

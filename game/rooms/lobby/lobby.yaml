@@ -20,8 +20,8 @@ default_state:
     - id: receptionist
       character: receptionist
       location:
-        x: 699
-        y: 270
+        x: 732
+        y: 234
         direction: down
       interactLocation:
         x: 713
@@ -133,8 +133,8 @@ default_state:
     - id: pen
       type: pen
       location:
-        x: 649
-        y: 239
+        x: 755
+        y: 203
         width: 19
         height: 16
       interactLocation:
@@ -218,3 +218,9 @@ default_state:
         x: 790
         y: 272
         direction: up
+  images:
+    - id: reception_desk
+      image: rooms/lobby/reception_desk.png
+      location:
+        x: 722
+        y: 235
