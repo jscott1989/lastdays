@@ -293,7 +293,11 @@ export default class Room {
     }
 
     removeItem(itemId) {
-        this.items[itemId].destroy();
+        this.items.get(itemId).destroy();
         delete this.items[itemId];
+    }
+
+    getItem(itemId) {
+        return this.items.get(itemId);
     }
 }

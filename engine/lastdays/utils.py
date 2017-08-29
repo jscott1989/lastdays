@@ -66,3 +66,14 @@ def send_to_all(subject, content):
             "content": content
         })
     })
+
+
+def get_with_id(collection, id):
+    for c in collection:
+        if c["id"] == id:
+            return c
+    return None
+
+
+def delete_with_id(collection, id):
+    return list(filter(lambda i: i["id"] != id, collection))

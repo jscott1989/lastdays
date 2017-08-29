@@ -54,12 +54,13 @@ export default class Player extends Character {
     }
 
     pickUpItem(itemId) {
+        const item  = this.game.getRoom().getItem(itemId);
         this.game.getRoom().removeItem(itemId);
 
-        if (this.data.inventory[item] == null) {
-            this.data.inventory[item] = 0;
+        if (this.data.inventory[item.get("type")] == null) {
+            this.data.inventory[item.get("type")] = 0;
         }
-        this.data.inventory[item] += 1;
+        this.data.inventory[item.get("type")] += 1;
     }
 
     getInteractLocation() {

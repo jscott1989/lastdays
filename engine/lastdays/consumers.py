@@ -15,7 +15,8 @@ RESPONDERS = {
     "setDirection": responders.setDirection,
     "playSound": responders.playSound,
     "pickDialogue": responders.pickDialogue,
-    "goToRoom": responders.goToRoom
+    "goToRoom": responders.goToRoom,
+    "pickUpItem": responders.pickUpItem
 }
 
 

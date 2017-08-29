@@ -18,7 +18,9 @@ export default class LocalPlayer extends Player {
 
     pickUpItem(itemId) {
         this.game.getConnection().send("pickUpItem", {"item": itemId});
-        return super.pickUpItem(itemId);
+        const resp = super.pickUpItem(itemId);
+        this.game.getUiController().refreshInventory();
+        return resp;
     }
 
     removeFromInventory(item) {
