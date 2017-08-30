@@ -25,3 +25,9 @@ default_state:
         x: 611
         y: 503
         direction: right
+  items:
+    - id: key
+      type: key
+      location:
+        x: 393
+        y: 484
