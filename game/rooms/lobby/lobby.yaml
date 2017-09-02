@@ -138,8 +138,8 @@ default_state:
         width: 19
         height: 16
       interactLocation:
-        x: 657
-        y: 279
+        x: 760
+        y: 258
         direction: up
     - id: poster1
       type: poster

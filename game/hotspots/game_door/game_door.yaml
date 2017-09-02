@@ -3,18 +3,15 @@ lookAt:
   - type: talk
     text: In the centre of the door is a slot for a ticket
 interact:
-  - type: goToRoom
-    room: waiting_area
-    x: 168
-    y: 415
-    direction: right
+  - type: callLocalFunction
+    function: endOfDemo
   # - type: talk
   #   text: The door won't open
   # - type: talk
   #   text: I think I need a ticket
 ticket:
-  - type: goToRoom
-    room: waiting_area
-    x: 168
-    y: 415
-    direction: right
+  - type: callLocalFunction
+    function: endOfDemo
+    wait: true
+  - type: playSound
+    sound: door

@@ -24,6 +24,10 @@ def configuration(request):
             configuration["images"].add(image["image"])
     configuration["images"] = list(configuration["images"])
 
+    configuration["functions"] = {}
+    for fileName in os.listdir(os.path.join(settings.GAME_DIRECTORY, "functions")):
+        configuration["functions"][os.path.splitext(fileName)[0]] = "functions/" + fileName;
+
     configuration["dialogues"] = {}
     for r in os.listdir("game/dialogues"):
         with open("game/dialogues/%s/%s.yaml" % (r, r)) as o:

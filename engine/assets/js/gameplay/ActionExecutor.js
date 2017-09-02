@@ -12,7 +12,8 @@ export default class ActionExecutor {
             "beginDialogue": this._beginDialogue.bind(this),
             "playSound": this._playSound.bind(this),
             "goToRoom": this._goToRoom.bind(this),
-            "pickUpItem": this._pickUpItem.bind(this)
+            "pickUpItem": this._pickUpItem.bind(this),
+            "callLocalFunction": this._callLocalFunction.bind(this)
         }
     }
 
@@ -94,6 +95,15 @@ export default class ActionExecutor {
             return this.game.getPlayer().playSound(action.sound)
         } else {
             this.game.getPlayer().playSound(action.sound)
+            return Promise.resolve();
+        }
+    }
+
+    _callLocalFunction(action, player, context) {
+        if (action.wait) {
+            return this.game.callLocalFunction(action.function, player, context)
+        } else {
+            this.game.callLocalFunction(action.function, player, context)
             return Promise.resolve();
         }
     }

@@ -1,5 +1,26 @@
 @import url('https://fonts.googleapis.com/css?family=Press+Start+2P');
 
+
+#end-of-demo {
+    display: none;
+    width: 600px;
+    height: 600px;
+    background: #000;
+    border: 2px solid black;
+
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto;
+    color: #FFF;
+    text-align: center;
+    padding-left: 200px;
+    padding-right: 200px;
+}
+
 #loading {
     position: absolute;
     left: 0px;
@@ -194,6 +215,7 @@ body {
 // Selected Item
 .selected-item {
     position: absolute;
+    width: 64px;
 }
 // End Selected Item
 

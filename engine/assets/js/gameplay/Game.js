@@ -239,4 +239,31 @@ export default class Game {
     getWorldState() {
         return this.worldState;
     }
+
+    getLocalFunction(functionName) {
+        return new Promise((resolve, fail) => {
+            if (!this.functions) {
+                this.functions = new Map();
+            }
+
+            if (!this.functions.get(functionName)) {
+                fetch("/static/" + this.configuration.get("functions")[functionName]).then(r => r.text()).then((functionCode) => {
+                    var func = "";
+                    eval("func =" + functionCode)
+                    this.functions.set(functionName, func);
+                    resolve(this.functions.get(functionName));
+                });
+            } else {
+                resolve(this.functions.get(functionName));
+            }
+        });
+    }
+
+    callLocalFunction(functionName, player, context) {
+        return new Promise((resolve, fail) => {
+            this.getLocalFunction(functionName).then((func) => {
+                func(player, context).then(resolve);
+            });
+        });
+    }
 }

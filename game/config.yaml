@@ -1,14 +1,10 @@
 name: The Last Days of Earth
 default_character: alien
 starting_location:
-  room: ovaloffice
-  x: 782
-  y: 508
-  direction: down
-  # room: lobby
-  # x: 390
-  # y: 590
-  # direction: up
+  room: lobby
+  x: 390
+  y: 590
+  direction: up
 starting_inventory:
   euro: 6
 initial_player_state:
