@@ -163,3 +163,14 @@ dietsoda:
       participant: 2
       type: talk
       text: Take this for your trouble
+ticket:
+  item: true
+  actions:
+    -
+      participant: 2
+      type: talk
+      text: You're going in the Earth game! I'm going back in for a second game soon
+    -
+      participant: 2
+      type: talk
+      text: Maybe I'll see you in there

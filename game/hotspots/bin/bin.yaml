@@ -9,3 +9,12 @@ interact:
     text: ...
   - type: talk
     text: There's nothing useful
+euro:
+  - type: talk
+    text: Literally throwing money away
+soda:
+  - type: talk
+    text: I'm not throwing this away
+dietsoda:
+  - type: talk
+    text: I'm not throwing this away

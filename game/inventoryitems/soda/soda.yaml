@@ -3,3 +3,6 @@ image: inventoryitems/soda/soda.png
 lookAt:
   - type: talk
     text: It's just an ordinary soda, full of sugar.
+defaultInteract:
+  - type: talk
+    text: I don't want to waste it

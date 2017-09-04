@@ -2,3 +2,16 @@ name: Door
 lookAt:
   - type: talk
     text: It's a door
+euro:
+  - type: talk
+    text: Theres nowhere for me to slide the coin
+soda:
+  - type: talk
+    text: I suppose I could make the door wet and hope it magically opens
+  - type: talk
+    text: That doesn't seem like a great plan though
+dietsoda:
+  - type: talk
+    text: I suppose I could make the door wet and hope it magically opens
+  - type: talk
+    text: That doesn't seem like a great plan though

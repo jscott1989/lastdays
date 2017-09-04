@@ -2,8 +2,8 @@ import Character from "./Character.js";
 import Dialogue from "./Dialogue.js";
 
 export default class Player extends Character {
-    removeFromInventory(item) {
-        this.data.inventory[item] -= 1;
+    removeFromInventory(item, number) {
+        this.data.inventory[item] -= number;
         if (this.data.inventory[item] <= 0) {
             delete this.data.inventory[item];
         }

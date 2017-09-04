@@ -55,7 +55,7 @@ export default class ActionExecutor {
     }
 
     _removeFromInventory(action, player) {
-        ActionExecutor._getPlayer(action, player).removeFromInventory(action.item)
+        ActionExecutor._getPlayer(action, player).removeFromInventory(action.item, action.number || 1)
         return Promise.resolve();
     }
 

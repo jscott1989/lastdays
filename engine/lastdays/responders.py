@@ -57,7 +57,7 @@ def pickDialogue(player, channel, subject, content):
 
 
 def removeFromInventory(player, channel, subject, content):
-    player.data["inventory"][content["item"]] -= 1
+    player.data["inventory"][content["item"]] -= content["number"]
     if player.data["inventory"][content["item"]] <= 0:
         del player.data["inventory"][content["item"]]
     player.save()

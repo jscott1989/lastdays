@@ -89,30 +89,7 @@ euro:
               wait: true
             - type: removeFromInventory
               item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
-            - type: removeFromInventory
-              item: euro
+              number: 13
             - participant: 2
               type: talk
               text: Here you go, sir
@@ -123,3 +100,25 @@ euro:
             - participant: 2
               type: talk
               text: That's not enough money, sir
+soda:
+  item: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: Do you want a soda?
+    -
+      participant: 2
+      type: talk
+      text: No thank you sir, if you don't have the money for a ticket please move along
+dietsoda:
+  item: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: Do you want a soda?
+    -
+      participant: 2
+      type: talk
+      text: No thank you sir, if you don't have the money for a ticket please move along

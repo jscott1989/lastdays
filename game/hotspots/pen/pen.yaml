@@ -15,3 +15,6 @@ soda:
     item: soda
   - type: addToInventory
     item: dietsoda
+dietsoda:
+  - type: talk
+    text: I've already written on it. I don't want to overdo it!

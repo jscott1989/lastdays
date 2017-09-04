@@ -5,3 +5,9 @@ lookAt:
 interact:
   - type: talk
     text: I can't reach it
+soda:
+  - type: talk
+    text: I don't want to damage the posters
+dietsoda:
+  - type: talk
+    text: I don't want to damage the posters

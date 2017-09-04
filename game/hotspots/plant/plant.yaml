@@ -7,3 +7,14 @@ lookAt:
 interact:
   - type: talk
     text: I can't lift it
+euro:
+  - type: talk
+    text: It doesn't look like a Yevattian Money tree
+  - type: talk
+    text: It won't do anything
+soda:
+  - type: talk
+    text: That'd kill the plant
+dietsoda:
+  - type: talk
+    text: That'd kill the plant

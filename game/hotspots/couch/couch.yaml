@@ -7,3 +7,14 @@ lookAt:
 interact:
   - type: talk
     text: Huh... nothing down the side of it. Who would've thought?
+euro:
+  - type: talk
+    text: Maybe I'll put some money down the side of the couch for safe keeping...
+  - type: talk
+    text: or maybe not
+soda:
+  - type: talk
+    text: I don't want to stain the couch any more than it already is
+dietsoda:
+  - type: talk
+    text: I don't want to stain the couch any more than it already is

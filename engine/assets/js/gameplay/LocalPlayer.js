@@ -23,9 +23,9 @@ export default class LocalPlayer extends Player {
         return resp;
     }
 
-    removeFromInventory(item) {
-        this.game.getConnection().send("removeFromInventory", {"item": item})
-        super.removeFromInventory(item);
+    removeFromInventory(item, number) {
+        this.game.getConnection().send("removeFromInventory", {"item": item, "number": number})
+        super.removeFromInventory(item, number);
         this.game.getUiController().refreshInventory();
     }
 

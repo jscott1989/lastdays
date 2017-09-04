@@ -66,3 +66,12 @@ euro:
           - type: setVariable
             variable: "@state.insertedEuros"
             value: "@state.insertedEuros + 1"
+soda:
+  - type: talk
+    text: I'm not putting the soda back in. I just spent €3 to get it out!
+dietsoda:
+  - type: talk
+    text: I'm not putting the soda back in. I just spent €3 to get it out!
+ticket:
+  - type: talk
+    text: It doesn't fit

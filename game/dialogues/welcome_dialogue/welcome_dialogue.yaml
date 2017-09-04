@@ -15,6 +15,49 @@ hello:
       participant: 2
       type: talk
       text: The number one escape experience this side of Epsilon Eridani!
+welcome_alien:
+  hover: Greeter
+  image: dialogues/welcome_dialogue/welcome_alien.png
+  onceOnly: true
+  condition: "@state.dialogues.welcome_dialogue.hello"
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: What's your role here?
+    -
+      participant: 2
+      type: talk
+      text: I'm here to make sure people know to walk to the right of the reception desk
+    -
+      participant: 2
+      type: talk
+      text: to find The number one escape experience this side of Epsilon Eridani!
+perrogh:
+  hover: Other Alien
+  image: dialogues/thirsty_dialogue/perrogh.png
+  onceOnly: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: Who is he?
+    -
+      participant: 2
+      type: talk
+      text: He's Perrogh Zekmumt, one of our very wealthy players
+    -
+      participant: 2
+      type: talk
+      text: He comes here regularly for one reason
+    -
+      participant: 1
+      type: talk
+      text: What's that?
+    -
+      participant: 2
+      type: talk
+      text: for The number one escape experience this side of Epsilon Eridani!
 earth:
   hover: Earth Game
   image: dialogues/welcome_dialogue/earth.png
@@ -61,3 +104,44 @@ euro:
       participant: 2
       type: talk
       text: For the number one escape experience this side of Epsilon Eridani!
+soda:
+  item: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: Do you want a soda?
+    -
+      participant: 2
+      type: talk
+      text: No thank you, I just want to spread the word about
+    -
+      participant: 2
+      type: talk
+      text: To the number one escape experience this side of Epsilon Eridani!
+dietsoda:
+  item: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: Do you want a soda?
+    -
+      participant: 2
+      type: talk
+      text: No thank you, I just want to spread the word about
+    -
+      participant: 2
+      type: talk
+      text: To the number one escape experience this side of Epsilon Eridani!
+ticket:
+  item: true
+  actions:
+    -
+      participant: 2
+      type: talk
+      text: Oh, wow. You got a ticket
+    -
+      participant: 2
+      type: talk
+      text: To the number one escape experience this side of Epsilon Eridani!
