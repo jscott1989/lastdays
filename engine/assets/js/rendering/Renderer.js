@@ -241,11 +241,12 @@ export default class Renderer {
         }
     }
 
-    playSound(soundId) {
+    playSound(soundId, loop, volume) {
         return new Promise((resolve, fail) => {
             const sound = this.phaser.sound.add(soundId);
+            sound.loop = loop || false;
+            sound.volume = volume || 1.0;
             sound.onStop.addOnce(() => {
-                console.log("FINISHED PLAYING");
                 resolve();
             });
             sound.play();

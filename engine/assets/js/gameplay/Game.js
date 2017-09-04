@@ -94,6 +94,7 @@ export default class Game {
     }
 
     _click(subject, content) {
+        this.renderer.playSound("mouseclick", false, 0.5);
         if (content.button == "RIGHT" && this.selectedItem != null) {
             this.selectItem(null);
             return;

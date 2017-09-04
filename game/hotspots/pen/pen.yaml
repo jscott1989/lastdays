@@ -8,6 +8,9 @@ interact:
   - type: talk
     text: I tried pulling the pen, but the chain held it tight.
 soda:
+  - type: playSound
+    sound: writing
+    wait: true
   - type: removeFromInventory
     item: soda
   - type: addToInventory

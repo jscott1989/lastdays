@@ -93,6 +93,7 @@ export default class Room {
         this.width = bgImg.width;
         this.height = bgImg.height;
         this.background = this.game.renderer.addTileSprite(this.name + "-background");
+        // this.game.renderer.addTileSprite(this.name + "-mask");
         this.game.renderer.setBounds(0, 0, this.width, this.height);
 
         // Calculate Easystar from mask
@@ -151,6 +152,10 @@ export default class Room {
         images.forEach(image => {
             this.images.set(image.id, new Image(this.game, image));
         });
+        
+        if (data.music) {
+            this.music = this.game.getRenderer().playSound(data.music.sound, true, data.music.volume);
+        }
 
         this.game.getConnection().messagesObservable.subscribe("addPlayer", this._addPlayer);
         this.game.getConnection().messagesObservable.subscribe("removePlayer", this._removePlayer);

@@ -6,6 +6,9 @@ scaling:
   maxScale: 0.6
   minScale: 0.1
 default_state:
+  music:
+    sound: lobby
+    volume: 0.5
   npcs:
     - id: welcome
       character: welcome_alien
@@ -14,8 +17,8 @@ default_state:
         y: 400
         direction: down
       interactLocation:
-        x: 339
-        y: 425
+        x: 346
+        y: 434
         direction: up
     - id: receptionist
       character: receptionist
@@ -24,8 +27,8 @@ default_state:
         y: 234
         direction: down
       interactLocation:
-        x: 713
-        y: 285
+        x: 723
+        y: 287
         direction: up
     - id: perrogh
       character: perrogh
@@ -34,8 +37,8 @@ default_state:
         y: 368
         direction: right
       interactLocation:
-        x: 219
-        y: 349
+        x: 226
+        y: 372
         direction: left
   hotspots:
     - id: sign1
@@ -46,8 +49,8 @@ default_state:
         width: 100
         height: 30
       interactLocation:
-        x: 128
-        y: 333
+        x: 79
+        y: 359
         direction: left
       lookAt:
         - type: talk
@@ -62,9 +65,9 @@ default_state:
         width: 84
         height: 113
       interactLocation:
-        x: 114
-        y: 339
-        direction: left
+        x: 79
+        y: 359
+        direction: up
     - id: sign2
       type: sign
       location:
@@ -73,8 +76,8 @@ default_state:
         width: 70
         height: 20
       interactLocation:
-        x: 613
-        y: 266
+        x: 625
+        y: 277
         direction: up
       lookAt:
         - type: talk
@@ -89,8 +92,8 @@ default_state:
         width: 54
         height: 74
       interactLocation:
-        x: 613
-        y: 267
+        x: 625
+        y: 277
         direction: up
     - id: sign3
       type: sign
@@ -100,9 +103,9 @@ default_state:
         width: 77
         height: 25
       interactLocation:
-        x: 852
-        y: 288
-        direction: right
+        x: 880
+        y: 301
+        direction: up
       lookAt:
         - type: talk
           text: "\"Last days of Earth\""
@@ -116,9 +119,9 @@ default_state:
         width: 61
         height: 103
       interactLocation:
-        x: 842
-        y: 285
-        direction: right
+        x: 880
+        y: 301
+        direction: up
     - id: vending_machine
       type: vending_machine
       location:
@@ -127,8 +130,8 @@ default_state:
         width: 147
         height: 215
       interactLocation:
-        x: 1284
-        y: 527
+        x: 1251
+        y: 538
         direction: up
     - id: pen
       type: pen
@@ -139,7 +142,7 @@ default_state:
         height: 16
       interactLocation:
         x: 760
-        y: 258
+        y: 286
         direction: up
     - id: poster1
       type: poster
@@ -149,9 +152,9 @@ default_state:
         width: 56
         height: 103
       interactLocation:
-        x: 911
-        y: 325
-        direction: right
+        x: 961
+        y: 399
+        direction: up
     - id: poster2
       type: poster
       location:
@@ -160,9 +163,9 @@ default_state:
         width: 83
         height: 159
       interactLocation:
-        x: 970
-        y: 384
-        direction: right
+        x: 1041
+        y: 436
+        direction: up
     - id: poster3
       type: poster
       location:
@@ -171,8 +174,8 @@ default_state:
         width: 118
         height: 225
       interactLocation:
-        x: 1070
-        y: 424
+        x: 1168
+        y: 477
         direction: right
     - id: couch
       type: couch
@@ -182,8 +185,8 @@ default_state:
         width: 249
         height: 127
       interactLocation:
-        x: 1033
-        y: 406
+        x: 1124
+        y: 464
         direction: right
     - id: bin
       type: bin
@@ -193,8 +196,8 @@ default_state:
         width: 43
         height: 61
       interactLocation:
-        x: 925
-        y: 332
+        x: 944
+        y: 384
         direction: up
     - id: plant1
       type: plant
@@ -204,8 +207,8 @@ default_state:
         width: 66
         height: 150
       interactLocation:
-        x: 170
-        y: 336
+        x: 178
+        y: 346
         direction: up
     - id: plant2
       type: plant
@@ -215,8 +218,8 @@ default_state:
         width: 48
         height: 83
       interactLocation:
-        x: 790
-        y: 272
+        x: 793
+        y: 292
         direction: up
   images:
     - id: reception_desk

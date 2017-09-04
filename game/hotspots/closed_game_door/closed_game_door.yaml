@@ -3,5 +3,7 @@ lookAt:
   - type: talk
     text: The door looks locked tight
 interact:
+  - type: playSound
+    sound: lockeddoor
   - type: talk
     text: The door won't open

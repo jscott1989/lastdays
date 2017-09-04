@@ -1,53 +1,13 @@
 name: Greeter
 color: "#FF0000"
-sprite: characters/alien/alien.png
-width: 256
-height: 386
+sprite: characters/welcome_alien/welcome_alien.png
+width: 264
+height: 524
 animations:
-  idle-side:
+  idle-down:
     frames:
       - 0
     fps: 1
-    loop: true
-  walk-side:
-    frames:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-    fps: 6
-    loop: true
-  idle-up:
-    frames:
-      - 7
-    fps: 1
-    loop: true
-  walk-up:
-    frames:
-      - 8
-      - 9
-      - 10
-      - 11
-      - 12
-      - 13
-    fps: 6
-    loop: true
-  idle-down:
-    frames:
-      - 14
-    fps: 1
-    loop: true
-  walk-down:
-    frames:
-      - 15
-      - 16
-      - 17
-      - 18
-      - 19
-      - 20
-    fps: 6
     loop: true
 lookAt:
   - type: talk

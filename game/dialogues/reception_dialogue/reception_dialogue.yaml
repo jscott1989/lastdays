@@ -11,6 +11,32 @@ hello:
       participant: 2
       type: talk
       text: Hello sir
+receptionist:
+  hover: receptionist
+  image: dialogues/reception_dialogue/receptionist.png
+  condition: "@state.dialogues.reception_dialogue.hello > 0"
+  onceOnly: true
+  actions:
+    -
+      participant: 1
+      type: talk
+      text: I can't help but noticing
+    -
+      participant: 1
+      type: talk
+      text: that you look very similar to me!
+    -
+      participant: 2
+      type: talk
+      text: Maybe a character was added late on
+    -
+      participant: 2
+      type: talk
+      text: and the developers thought nobody would notice if they re-used a sprite on a character in the distance
+    -
+      participant: 1
+      type: talk
+      text: oh...
 buy_ticket:
   hover: Cost
   image: inventoryitems/ticket/ticket.png
@@ -58,6 +84,9 @@ euro:
       options:
         - condition: "@inventory.euro >= 13"
           actions:
+            - type: playSound
+              sound: moneyforticket
+              wait: true
             - type: removeFromInventory
               item: euro
             - type: removeFromInventory
